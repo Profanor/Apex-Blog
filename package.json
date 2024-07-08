@@ -1,0 +1,38 @@
+{
+  "name": "project-gurusys-blog_api",
+  "version": "1.0.0",
+  "description": "A RESTful API for handling CRUD operations for a simple blog application",
+  "main": "app.js",
+  "scripts": {
+    "build": "tsc",
+    "dev": "nodemon --exec ts-node ./src/server.ts",
+    "start": "node dist/server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Profanor/GuruSys-Blog_API.git"
+  },
+  "author": "David Arinze",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Profanor/GuruSys-Blog_API/issues"
+  },
+  "homepage": "https://github.com/Profanor/GuruSys-Blog_API#readme",
+  "dependencies": {
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.4.5",
+    "morgan": "^1.10.0",
+    "winston": "^3.13.0",
+    "winston-daily-rotate-file": "^5.0.0"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.21",
+    "@types/morgan": "^1.9.9",
+    "@types/node": "^20.14.10",
+    "nodemon": "^3.1.4",
+    "ts-node": "^10.9.2"
+  }
+}
