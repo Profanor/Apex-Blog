@@ -3,6 +3,7 @@ import { Request, Response, NextFunction } from 'express';
 import morgan from 'morgan';
 /**------------------------ */
 import indexRoute from './routes/index';
+import authRoutes from './routes/authRoutes';
 import postRoutes from './routes/postRoutes';
 import main from './config/database';
 
@@ -20,7 +21,9 @@ app.use(morgan('dev'));
 
 //Routes
 app.use('/', indexRoute);
+app.use('/auth', authRoutes);
 app.use('/api/posts', postRoutes);
+
 
 // Middleware to handle 404 errors
 app.use((req: Request, res: Response, next: NextFunction) => {
