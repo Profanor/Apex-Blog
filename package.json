@@ -4,7 +4,7 @@
   "description": "A RESTful API for handling CRUD operations for a simple blog application",
   "main": "app.js",
   "scripts": {
-    "clean": "rimraf dist", 
+    "clean": "rimraf dist",
     "build": "npm run clean && tsc",
     "dev": "nodemon --exec ts-node ./src/server.ts",
     "start": "npm run build && node dist/server.js",
@@ -21,6 +21,7 @@
   },
   "homepage": "https://github.com/Profanor/GuruSys-Blog_API#readme",
   "dependencies": {
+    "bcrypt": "^5.1.1",
     "dotenv": "^16.4.5",
     "express": "^4.19.2",
     "jsonwebtoken": "^9.0.2",
@@ -30,7 +31,9 @@
     "winston-daily-rotate-file": "^5.0.0"
   },
   "devDependencies": {
+    "@types/bcrypt": "^5.0.2",
     "@types/express": "^4.17.21",
+    "@types/jsonwebtoken": "^9.0.6",
     "@types/morgan": "^1.9.9",
     "@types/node": "^20.14.10",
     "nodemon": "^3.1.4",
