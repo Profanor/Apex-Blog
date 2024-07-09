@@ -6,6 +6,7 @@ import AuthProvider from './AuthContext';
 import Signup from './components/Signup';
 import Login from './components/Login';
 import Posts from './components/AllPosts';
+import PostDetail from './components/PostDetail';
 import CreatePost from './components/Posts';
 import Navbar from './components/Navbar';
 
@@ -20,6 +21,7 @@ const App = () => {
         <Routes>
           <Route path='/' element={<Posts />} />
           <Route path='/posts' element={<Posts />} />
+          <Route path="/posts/:postId" element={<PostDetail />} />
           <Route path='/signup' element={<Signup />} />
           <Route path='/login' element={<Login />} />
           {/* Conditionally render CreatePost based on authentication */}

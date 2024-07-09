@@ -50,6 +50,7 @@ export const createPost = [
     }
 ];
 
+
 // Get all blog posts
 export const getPosts = async (req: Request, res: Response) => {
     try {
