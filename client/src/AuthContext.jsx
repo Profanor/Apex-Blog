@@ -1,37 +1,40 @@
 import React, { createContext, useState, useEffect } from 'react';
-import { jwtDecode } from "jwt-decode";
+import {jwtDecode} from 'jwt-decode';
 
 export const AuthContext = createContext();
 
 const AuthProvider = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [userId, setUserId] = useState('');
-  
+  const [username, setUsername] = useState('');
 
   useEffect(() => {
     const token = localStorage.getItem('token');
     if (token) {
       const decodedToken = jwtDecode(token);
-      setUserId(decodedToken.userId); // Assuming the token contains a userId field
+      setUsername(decodedToken.username); // Corrected field name
       setIsAuthenticated(true);
-      
     }
   }, []);
-  console.log('UserId:', userId);
+
+  useEffect(() => {
+    console.log('Updated Username:', username);
+  }, [username]);
 
   const login = (token) => {
     localStorage.setItem('token', token);
+    const decodedToken = jwtDecode(token);
+    setUsername(decodedToken.username); // Ensure username is set after login
     setIsAuthenticated(true);
   };
 
   const logout = () => {
     localStorage.removeItem('token');
     setIsAuthenticated(false);
-    setUserId('');
+    setUsername('');
   };
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, userId, login, logout }}>
+    <AuthContext.Provider value={{ isAuthenticated, username, login, logout }}>
       {children}
     </AuthContext.Provider>
   );

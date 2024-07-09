@@ -28,9 +28,11 @@ const handleErrors = (res, error, customMessage) => {
 exports.createPost = [
     upload.single('image'),
     (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+        var _a;
         try {
-            const { title, content, author } = req.body;
+            const { title, content } = req.body;
             const image = req.file;
+            const author = (_a = req.user) === null || _a === void 0 ? void 0 : _a.id;
             // input validation check for empty fields
             if (!title || !content || !author) {
                 return res.status(400).json({ error: 'All fields are required' });
@@ -69,7 +71,8 @@ exports.getPosts = getPosts;
 const getPostById = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const postId = req.params.postId;
-        const post = yield Posts_1.default.findById(postId);
+        // Populate the author field with the username
+        const post = yield Posts_1.default.findById(postId).populate('author', 'username');
         if (!post) {
             return res.status(404).json({ error: 'Post with the specified ID was not found' });
         }
@@ -82,7 +85,7 @@ const getPostById = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
 exports.getPostById = getPostById;
 // Update an existing blog post
 const updatePost = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    var _a;
+    var _a, _b;
     try {
         const { title, content } = req.body;
         // input validation check for empty fields
@@ -95,8 +98,10 @@ const updatePost = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
         if (!post) {
             return res.status(404).json({ error: 'Post not found' });
         }
-        // Authorization check
-        if (post.author !== ((_a = req.user) === null || _a === void 0 ? void 0 : _a.username)) {
+        // Debugging logs
+        console.log('Post Author:', post.author);
+        console.log('User ID:', (_a = req.user) === null || _a === void 0 ? void 0 : _a.id);
+        if (post.author.toString() !== ((_b = req.user) === null || _b === void 0 ? void 0 : _b.id)) {
             return res.status(403).json({ error: 'You are not authorized to update this post' });
         }
         // Update the post
@@ -112,7 +117,7 @@ const updatePost = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
 exports.updatePost = updatePost;
 // Delete a blog post
 const deletePost = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    var _a;
+    var _a, _b;
     try {
         const postId = req.params.postId;
         // Find the post first to check the author
@@ -120,8 +125,10 @@ const deletePost = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
         if (!post) {
             return res.status(404).json({ error: 'Post not found' });
         }
-        // Authorization check
-        if (post.author !== ((_a = req.user) === null || _a === void 0 ? void 0 : _a.username)) {
+        // Debugging logs
+        console.log('Post Author:', post.author);
+        console.log('User ID:', (_a = req.user) === null || _a === void 0 ? void 0 : _a.id);
+        if (post.author.toString() !== ((_b = req.user) === null || _b === void 0 ? void 0 : _b.id)) {
             return res.status(403).json({ error: 'You are not authorized to delete this post' });
         }
         yield Posts_1.default.findByIdAndDelete(postId);

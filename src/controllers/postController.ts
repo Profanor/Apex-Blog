@@ -33,7 +33,7 @@ export const createPost = [
             const newPost = new Post({
                 title,
                 content,
-                author,
+                author: req.user?.username,
                 image: image ? {
                     data: image.buffer,
                     contentType: image.mimetype
@@ -99,8 +99,12 @@ export const updatePost = async (req: AuthenticatedRequest, res: Response) => {
             return res.status(404).json({ error: 'Post not found' });
         }
 
-        // Authorization check using user id
-        if (post.author.toString() !== req.user?.id) {
+         // Debugging logs
+         console.log('Post Author:', post.author);
+         console.log('User ID:', req.user?.id);
+
+        // Correct authorization check
+        if (post.author !== req.user?.username) {
             return res.status(403).json({ error: 'You are not authorized to update this post' });
         }
 
@@ -128,10 +132,14 @@ export const deletePost = async (req: AuthenticatedRequest, res: Response) => {
             return res.status(404).json({ error: 'Post not found' });
         }
 
-        // Authorization check using user id
-        if (post.author.toString() !== req.user?.id) {
-            return res.status(403).json({ error: 'You are not authorized to update this post' });
-        }
+         // Debugging logs
+         console.log('Post Author:', post.author);
+         console.log('User ID:', req.user?.id);
+
+        // Correct authorization check
+            if (post.author !== req.user?.username) {
+                return res.status(403).json({ error: 'You are not authorized to delete this post' });
+            }
 
         await Post.findByIdAndDelete(postId);
 
