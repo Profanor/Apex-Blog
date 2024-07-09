@@ -12,7 +12,8 @@ const PostDetail = () => {
   useEffect(() => {
     const fetchPost = async () => {
       try {
-        const response = await axios.get(`http://localhost:4000/api/posts/${postId}`);
+        const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:4000';
+        const response = await axios.get(`${apiUrl}/api/posts/${postId}`);
         setPost(response.data.post);
       } catch (error) {
         console.error('Failed to fetch post:', error.response?.data || error.message);
@@ -24,7 +25,8 @@ const PostDetail = () => {
 
   const handleDelete = async () => {
     try {
-      await axios.delete(`http://localhost:4000/api/posts/${postId}`, {
+      const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:4000';
+      await axios.delete(`${apiUrl}/api/posts/${postId}`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('token')}`
         }

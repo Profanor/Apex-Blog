@@ -12,7 +12,8 @@ const EditPost = () => {
   useEffect(() => {
     const fetchPost = async () => {
       try {
-        const response = await axios.get(`http://localhost:4000/api/posts/${postId}`);
+        const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:4000';
+        const response = await axios.get(`${apiUrl}/api/posts/${postId}`);
         const { title, content } = response.data.post;
         setTitle(title);
         setContent(content);
@@ -33,8 +34,9 @@ const EditPost = () => {
         return;
       }
 
+      const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:4000';
       await axios.put(
-        `http://localhost:4000/api/posts/${postId}`,
+        `${apiUrl}/api/posts/${postId}`,
         { title, content },
         {
           headers: {
