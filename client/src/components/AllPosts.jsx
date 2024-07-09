@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom'; // Import Link from react-router-dom
+import { Link } from 'react-router-dom'; 
 import axios from 'axios';
 
 const Posts = () => {
@@ -45,7 +45,7 @@ const Posts = () => {
                 <div className="mt-4 max-w-full overflow-hidden" style={{ maxHeight: '600px' }}>
                   <img
                     src={`data:${post.image.contentType};base64,${arrayBufferToBase64(post.image.data.data)}`}
-                    alt="Post Image"
+                    alt="Post"
                     className="rounded-lg"
                     style={{ maxWidth: '100%', height: 'auto' }}
                   />

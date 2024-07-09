@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { useParams } from 'react-router-dom'; // Import useParams hook
+import { useParams } from 'react-router-dom'; 
 
 const PostDetail = () => {
   const [post, setPost] = useState(null);
-  const { postId } = useParams(); // Use useParams hook to get postId
+  const { postId } = useParams(); 
 
   useEffect(() => {
     const fetchPost = async () => {
