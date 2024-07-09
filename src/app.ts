@@ -1,4 +1,5 @@
 import express from 'express';
+import cors from 'cors';
 import { Request, Response, NextFunction } from 'express';
 import morgan from 'morgan';
 /**------------------------ */
@@ -17,6 +18,14 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended:true }));
 app.use(morgan('dev'));
+
+// CORS configuration
+const corsOptions = {
+  origin: 'http://localhost:3000',
+  optionsSuccessStatus: 200, // Some legacy browsers choke on 204
+};
+
+app.use(cors(corsOptions));
 
 
 //Routes

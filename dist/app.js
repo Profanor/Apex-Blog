@@ -7,6 +7,7 @@ const express_1 = __importDefault(require("express"));
 const morgan_1 = __importDefault(require("morgan"));
 /**------------------------ */
 const index_1 = __importDefault(require("./routes/index"));
+const authRoutes_1 = __importDefault(require("./routes/authRoutes"));
 const postRoutes_1 = __importDefault(require("./routes/postRoutes"));
 const database_1 = __importDefault(require("./config/database"));
 // Initialize database
@@ -19,6 +20,7 @@ app.use(express_1.default.urlencoded({ extended: true }));
 app.use((0, morgan_1.default)('dev'));
 //Routes
 app.use('/', index_1.default);
+app.use('/auth', authRoutes_1.default);
 app.use('/api/posts', postRoutes_1.default);
 // Middleware to handle 404 errors
 app.use((req, res, next) => {
