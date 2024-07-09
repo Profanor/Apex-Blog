@@ -5,16 +5,22 @@ import { useNavigate } from 'react-router-dom';
 const Signup = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [showModal, setShowModal] = useState(false);  // Success modal state
   const navigate = useNavigate();
 
   const handleSignup = async (e) => {
     e.preventDefault();
     try {
       await axios.post('http://localhost:4000/auth/register', { username, password });
-      navigate('/login');
+      setShowModal(true);  // Show success modal
     } catch (error) {
       console.error('Signup failed', error);
     }
+  };
+
+  const handleCloseModal = () => {
+    setShowModal(false);
+    navigate('/login');  // Navigate to login after closing the modal
   };
 
   return (
@@ -52,6 +58,20 @@ const Signup = () => {
           </form>
         </div>
       </div>
+      {showModal && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+          <div className="bg-white p-8 rounded shadow-md w-96">
+            <h2 className="text-2xl font-bold mb-6">Signup Successful!</h2>
+            <p className="mb-4">Your account has been created successfully.</p>
+            <button
+              onClick={handleCloseModal}
+              className="w-full bg-green-500 text-white p-2 rounded hover:bg-green-600"
+            >
+              OK
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
