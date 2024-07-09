@@ -9,9 +9,10 @@ const Posts = () => {
     const fetchPosts = async () => {
       try {
         const token = localStorage.getItem('token');
+        const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:4000'; // Use environment variable or default URL
         const config = token ? { headers: { Authorization: `Bearer ${token}` } } : {};
 
-        const response = await axios.get('http://localhost:4000/api/posts', config);
+        const response = await axios.get(`${apiUrl}/api/posts`, config);
         setPosts(response.data.posts);
       } catch (error) {
         console.error('Failed to fetch posts:', error.response?.data || error.message);
