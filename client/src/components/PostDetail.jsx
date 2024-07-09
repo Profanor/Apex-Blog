@@ -45,7 +45,7 @@ const PostDetail = () => {
   };
 
   const handleGoBack = () => {
-    navigate('/posts'); // Navigate back to the posts list
+    navigate('/posts'); // Navigate back to posts
   };
 
   if (!post) {

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom'; 
+import { Link } from 'react-router-dom';
 import axios from 'axios';
 
 const Posts = () => {
@@ -10,14 +10,14 @@ const Posts = () => {
       try {
         const token = localStorage.getItem('token');
         const config = token ? { headers: { Authorization: `Bearer ${token}` } } : {};
-  
+
         const response = await axios.get('http://localhost:4000/api/posts', config);
         setPosts(response.data.posts);
       } catch (error) {
         console.error('Failed to fetch posts:', error.response?.data || error.message);
       }
     };
-  
+
     fetchPosts();
   }, []);
 
@@ -32,28 +32,32 @@ const Posts = () => {
   };
 
   return (
-    <div>
-      <div className="container mx-auto p-4">
-        <h1 className="text-3xl font-bold mb-6">Blog Posts</h1>
-        {posts.map((post) => (
-          <Link key={post._id} to={`/posts/${post._id}`}>
-            <div className="mb-4 p-4 border border-gray-300 rounded-lg shadow-md">
-              <h2 className="text-2xl font-semibold">{post.title}</h2>
-              <p className="text-gray-700 mt-2">{post.content}</p>
-              <small className="text-gray-500">By {post.author}</small>
-              {post.image && (
-                <div className="mt-4 max-w-full overflow-hidden" style={{ maxHeight: '600px' }}>
-                  <img
-                    src={`data:${post.image.contentType};base64,${arrayBufferToBase64(post.image.data.data)}`}
-                    alt="Post"
-                    className="rounded-lg"
-                    style={{ maxWidth: '100%', height: 'auto' }}
-                  />
-                </div>
-              )}
-            </div>
-          </Link>
-        ))}
+    <div className="container mx-auto p-4">
+      <h1 className="text-3xl font-bold mb-6">Blog Posts</h1>
+      {posts.map((post) => (
+        <Link key={post._id} to={`/posts/${post._id}`}>
+          <div
+            className="mb-4 p-4 border border-gray-300 rounded-lg shadow-md hover:shadow-lg transition duration-300"
+            style={{ cursor: 'pointer' }}
+          >
+            <h2 className="text-2xl font-semibold">{post.title}</h2>
+            <p className="text-gray-700 mt-2">{post.content}</p>
+            <small className="text-gray-500">By {post.author}</small>
+            {post.image && (
+              <div className="mt-4 max-w-full overflow-hidden" style={{ maxHeight: '600px' }}>
+                <img
+                  src={`data:${post.image.contentType};base64,${arrayBufferToBase64(post.image.data.data)}`}
+                  alt="Post"
+                  className="rounded-lg"
+                  style={{ maxWidth: '100%', height: 'auto' }}
+                />
+              </div>
+            )}
+          </div>
+        </Link>
+      ))}
+      <div className="mt-8 text-center">
+        <p className="text-lg text-gray-600">Want to create a post? <Link to="/signup" className="text-blue-600 hover:underline">Sign up</Link> now!</p>
       </div>
     </div>
   );
