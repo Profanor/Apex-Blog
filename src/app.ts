@@ -21,7 +21,7 @@ app.use(morgan('dev'));
 
 // CORS configuration
 const corsOptions = {
-  origin: 'http://localhost:3000',
+  origin: '*',
   optionsSuccessStatus: 200, // Some legacy browsers choke on 204
 };
 
