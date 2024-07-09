@@ -51,7 +51,8 @@ const CreatePost = () => {
     }
 
     try {
-      const response = await axios.post('http://localhost:4000/api/posts', formData, {
+      const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:4000';
+      const response = await axios.post(`${apiUrl}/api/posts`, formData, {
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('token')}`,
           'Content-Type': 'multipart/form-data'

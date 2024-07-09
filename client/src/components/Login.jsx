@@ -18,8 +18,12 @@ const Login = () => {
     }
 
     try {
-      const response = await axios.post('http://localhost:4000/auth/login', { username, password });
+      const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:4000';
+
+      const response = await axios.post(`${apiUrl}/auth/login`, { username, password });
+
       login(response.data.token);
+      
       navigate('/posts');
     } catch (error) {
       setError('Login failed. Please check your credentials and try again.');  // Set error message on failure

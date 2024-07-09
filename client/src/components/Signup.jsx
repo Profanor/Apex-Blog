@@ -11,7 +11,10 @@ const Signup = () => {
   const handleSignup = async (e) => {
     e.preventDefault();
     try {
-      await axios.post('http://localhost:4000/auth/register', { username, password });
+      const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:4000';
+
+      await axios.post(`${apiUrl}/auth/register`, { username, password });
+      
       setShowModal(true);  // Show success modal
     } catch (error) {
       console.error('Signup failed', error);
