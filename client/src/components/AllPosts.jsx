@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import Navbar from './Navbar';
 
 const Posts = () => {
   const [posts, setPosts] = useState([]);
@@ -8,21 +7,22 @@ const Posts = () => {
   useEffect(() => {
     const fetchPosts = async () => {
       try {
-        const response = await axios.get('http://localhost:4000/api/posts', {
-          headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
-        });
+        const token = localStorage.getItem('token');
+        const config = token ? { headers: { Authorization: `Bearer ${token}` } } : {};
+  
+        const response = await axios.get('http://localhost:4000/api/posts', config);
         setPosts(response.data.posts);
       } catch (error) {
-        console.error('Failed to fetch posts', error);
+        console.error('Failed to fetch posts:', error.response?.data || error.message);
       }
     };
-
+  
     fetchPosts();
   }, []);
+  
 
   return (
     <div>
-      <Navbar />
       <div className="container mx-auto p-4">
         <h1 className="text-3xl font-bold mb-6">Blog Posts</h1>
         {posts.map((post) => (

@@ -15,32 +15,45 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.deletePost = exports.updatePost = exports.getPostById = exports.getPosts = exports.createPost = void 0;
 const Posts_1 = __importDefault(require("../models/Posts"));
 const logger_1 = __importDefault(require("../logger"));
+const multer_1 = __importDefault(require("multer"));
+// Configure multer for file upload
+const storage = multer_1.default.memoryStorage();
+const upload = (0, multer_1.default)({ storage });
 // Middleware for handling errors
 const handleErrors = (res, error, customMessage) => {
     logger_1.default.error(customMessage || 'An error occurred:', error);
     return res.status(500).json({ error: customMessage || 'Internal server error' });
 };
 // Create a blog post
-const createPost = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    var _a;
-    try {
-        const { title, content } = req.body;
-        const author = (_a = req.user) === null || _a === void 0 ? void 0 : _a.username;
-        // input validation check for empty fields
-        if (!title || !content || !author) {
-            return res.status(400).json({ error: 'All fields are required' });
+exports.createPost = [
+    upload.single('image'),
+    (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+        try {
+            const { title, content, author } = req.body;
+            const image = req.file;
+            // input validation check for empty fields
+            if (!title || !content || !author) {
+                return res.status(400).json({ error: 'All fields are required' });
+            }
+            // create a new blog post
+            const newPost = new Posts_1.default({
+                title,
+                content,
+                author,
+                image: image ? {
+                    data: image.buffer,
+                    contentType: image.mimetype
+                } : undefined
+            });
+            yield newPost.save();
+            // respond with a success message and the created post object
+            return res.status(201).json({ message: 'Your post was created successfully', newPost });
         }
-        // create a new blog post
-        const newPost = new Posts_1.default({ title, content, author });
-        yield newPost.save();
-        // respond with a success message and the created post object
-        return res.status(201).json({ message: 'Your post was created successfully', newPost });
-    }
-    catch (error) {
-        return handleErrors(res, error, 'An error occurred while trying to create that post');
-    }
-});
-exports.createPost = createPost;
+        catch (error) {
+            return handleErrors(res, error, 'An error occurred while trying to create that post');
+        }
+    })
+];
 // Get all blog posts
 const getPosts = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {

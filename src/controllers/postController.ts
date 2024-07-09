@@ -2,6 +2,11 @@ import { Response, Request } from 'express';
 import { AuthenticatedRequest } from '../middleware/auth';
 import Post from '../models/Posts';
 import logger from '../logger';
+import multer from 'multer';
+
+// Configure multer for file upload
+const storage = multer.memoryStorage();
+const upload = multer({ storage });
 
 
 // Middleware for handling errors
@@ -12,27 +17,38 @@ const handleErrors = (res: Response, error: any, customMessage?: string) => {
 
 
 // Create a blog post
-export const createPost = async (req: AuthenticatedRequest, res: Response) => {
-    try {
-        const { title, content } = req.body;
-        const author = req.user?.username;
+export const createPost = [
+    upload.single('image'),
+    async (req: AuthenticatedRequest, res: Response) => {
+        try {
+            const { title, content, author } = req.body;
+            const image = req.file;
 
-        // input validation check for empty fields
-        if (!title || !content || !author) {
-            return res.status(400).json({ error: 'All fields are required' });
+            // input validation check for empty fields
+            if (!title || !content || !author) {
+                return res.status(400).json({ error: 'All fields are required' });
+            }
+
+            // create a new blog post
+            const newPost = new Post({
+                title,
+                content,
+                author,
+                image: image ? {
+                    data: image.buffer,
+                    contentType: image.mimetype
+                } : undefined
+            });
+            await newPost.save();
+
+            // respond with a success message and the created post object
+            return res.status(201).json({ message: 'Your post was created successfully', newPost });
+
+        } catch (error) {
+            return handleErrors(res, error, 'An error occurred while trying to create that post');
         }
-        // create a new blog post
-        const newPost = new Post({ title, content, author });
-        await newPost.save();
-
-        // respond with a success message and the created post object
-        return res.status(201).json({ message: 'Your post was created successfully', newPost });
-
-    } catch (error) {
-        return handleErrors(res, error, 'An error occurred while trying to create that post');
     }
-};
-
+];
 
 // Get all blog posts
 export const getPosts = async (req: Request, res: Response) => {

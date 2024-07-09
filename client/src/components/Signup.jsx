@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import Navbar from './Navbar';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
@@ -20,7 +19,6 @@ const Signup = () => {
 
   return (
     <div className="min-h-screen bg-gray-100">
-      <Navbar />
       <div className="flex items-center justify-center h-full">
         <div className="bg-white p-8 mt-10 rounded shadow-md w-96">
           <h2 className="text-2xl font-bold mb-6">Signup</h2>

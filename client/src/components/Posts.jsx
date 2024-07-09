@@ -1,9 +1,11 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 const CreatePost = () => {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
+  const [author, setAuthor] = useState('');
   const [postCreated, setPostCreated] = useState(false); 
   const [image, setImage] = useState(null);
   const [error, setError] = useState(''); 
@@ -18,6 +20,10 @@ const CreatePost = () => {
     setContent(event.target.value);
   };
 
+  const handleAuthorChange = (event) => {
+    setAuthor(event.target.value);
+  };
+
   const handleImageChange = (event) => {
     setImage(event.target.files[0]);
   };
@@ -29,39 +35,42 @@ const CreatePost = () => {
   const clearForm = () => {
     setTitle('');
     setContent('');
+    setAuthor('');
     setImage(null);
   };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-
-    if (!title.trim() || !content.trim()) {
-      alert('Title and content cannot be empty');
+  
+    if (!title.trim() || !content.trim() || !author.trim()) {
+      alert('All fields cannot be empty');
       return;
     }
-
+  
     const formData = new FormData();
     formData.append('title', title);
     formData.append('content', content);
+    formData.append('author', author);
     if (image) {
       formData.append('image', image);
     }
-      
+  
     try {
-      const response = await fetch('http://localhost:4000/api/posts', {  
-        method: 'POST',
-        body: formData,
-      }); 
-
-      if (response.ok) {
+      const response = await axios.post('http://localhost:4000/api/posts', formData, {
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('token')}`,
+          'Content-Type': 'multipart/form-data'
+        },
+      });
+  
+      if (response.status === 201) { 
         setPostCreated(true);
         setTimeout(() => {
           navigate('/posts');
           clearForm(); // Reset the form fields
         }, 2000);
       } else {
-        const errorMessage = await response.text();
-        throw new Error(errorMessage);
+        throw new Error('Unexpected response code');
       }
     } catch (error) {
       console.error('Error creating post:', error.message);
@@ -100,6 +109,17 @@ const CreatePost = () => {
             id="content" 
             value={content} 
             onChange={handleContentChange} 
+            required 
+            className="mt-1 p-2 border border-gray-300 rounded-md w-full focus:outline-none focus:ring focus:ring-indigo-200 text-gray-800"
+          />
+        </div>
+        <div className="mb-4">
+          <label htmlFor="author" className="block text-sm font-medium text-gray-700">Author:</label>
+          <input 
+            type="text" 
+            id="author" 
+            value={author} 
+            onChange={handleAuthorChange} 
             required 
             className="mt-1 p-2 border border-gray-300 rounded-md w-full focus:outline-none focus:ring focus:ring-indigo-200 text-gray-800"
           />
