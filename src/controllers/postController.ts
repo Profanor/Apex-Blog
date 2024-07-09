@@ -99,8 +99,8 @@ export const updatePost = async (req: AuthenticatedRequest, res: Response) => {
             return res.status(404).json({ error: 'Post not found' });
         }
 
-        // Authorization check
-        if (post.author !== req.user?.username) {
+        // Authorization check using user id
+        if (post.author.toString() !== req.user?.id) {
             return res.status(403).json({ error: 'You are not authorized to update this post' });
         }
 
@@ -128,9 +128,9 @@ export const deletePost = async (req: AuthenticatedRequest, res: Response) => {
             return res.status(404).json({ error: 'Post not found' });
         }
 
-        // Authorization check
-        if (post.author !== req.user?.username) {
-            return res.status(403).json({ error: 'You are not authorized to delete this post' });
+        // Authorization check using user id
+        if (post.author.toString() !== req.user?.id) {
+            return res.status(403).json({ error: 'You are not authorized to update this post' });
         }
 
         await Post.findByIdAndDelete(postId);

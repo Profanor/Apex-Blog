@@ -1,10 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
-import { useParams } from 'react-router-dom'; 
+import { useParams } from 'react-router-dom';
+import { AuthContext } from '../AuthContext';
+import { useAuthenticationStatus } from '../useAuthStatus';
 
 const PostDetail = () => {
   const [post, setPost] = useState(null);
-  const { postId } = useParams(); 
+  const { isAuthenticated } = useAuthenticationStatus();
+  const { userId } = useContext(AuthContext); // Correctly getting userId from AuthContext
+  const { postId } = useParams();
 
   useEffect(() => {
     const fetchPost = async () => {
@@ -18,6 +22,15 @@ const PostDetail = () => {
 
     fetchPost();
   }, [postId]);
+
+  const handleDelete = async () => {
+    try {
+      await axios.delete(`http://localhost:4000/api/posts/${postId}`);
+      // Optionally: Redirect user after successful delete
+    } catch (error) {
+      console.error('Failed to delete post:', error.response?.data || error.message);
+    }
+  };
 
   // Function to convert ArrayBuffer to base64
   const arrayBufferToBase64 = (buffer) => {
@@ -46,6 +59,24 @@ const PostDetail = () => {
             className="rounded-lg"
             style={{ maxWidth: '100%', height: 'auto' }}
           />
+        </div>
+      )}
+      {isAuthenticated && ( // Render edit and delete buttons only if authenticated
+        <div className="mt-4">
+          {post.userId.toString() === userId && ( // Comparing userId from post with userId from AuthContext
+            <>
+              <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 mr-2"
+                onClick={() => {
+                  // Handle edit functionality
+                }}>
+                Edit
+              </button>
+              <button className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4"
+                onClick={handleDelete}>
+                Delete
+              </button>
+            </>
+          )}
         </div>
       )}
     </div>
