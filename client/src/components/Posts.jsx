@@ -71,11 +71,6 @@ const CreatePost = () => {
   return (
     <div className="max-w-lg mx-auto mt-12 p-6 bg-white shadow-md rounded-md">
       <h1 className="text-2xl font-bold text-gray-800 mb-4">Create a New Post</h1>
-      {postCreated && (
-        <div className="mb-4 text-green-600 font-semibold">
-          Post created successfully!
-        </div>
-      )}
       {error && (
         <div className="mb-4 text-red-600 font-semibold">
           {error}
@@ -140,6 +135,35 @@ const CreatePost = () => {
           </button>
         </div>
       </form>
+
+      {/* Modal for showing post created successfully */}
+      {postCreated && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center overflow-x-hidden overflow-y-auto outline-none focus:outline-none">
+          <div className="relative w-auto max-w-sm mx-auto my-6">
+            <div className="bg-white rounded-lg shadow-lg">
+              <div className="flex flex-col items-start p-4">
+                <div className="flex items-center mb-4">
+                  <div className="bg-green-500 rounded-full h-12 w-12 flex items-center justify-center">
+                    <svg
+                      className="h-8 w-8 text-white"
+                      fill="currentColor"
+                      viewBox="0 0 20 20"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        fillRule="evenodd"
+                        d="M10 0C4.477 0 0 4.477 0 10s4.477 10 10 10 10-4.477 10-10S15.523 0 10 0zm4.243 6.535a.75.75 0 0 1 1.06 1.06l-7.5 7.5a.75.75 0 0 1-1.06 0l-3.5-3.5a.75.75 0 0 1 1.06-1.06l3.022 3.022 6.94-6.94z"
+                      />
+                    </svg>
+                  </div>
+                  <h2 className="text-lg font-semibold ml-2">Success!</h2>
+                </div>
+                <p className="text-gray-600">Post created successfully.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
