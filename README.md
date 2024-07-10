@@ -1,4 +1,4 @@
-# Project GuruSys Technology
+# Project GuruSystems-Blog API
 
 A simple Restful API for managing blog posts
 
