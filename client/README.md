@@ -1,5 +1,5 @@
 ## Overview
-GuruSys Blog App is a React application that allows users to view, create, edit, and delete blog posts. It interacts with the GuruSys Blog API to fetch and update blog post data.
+GuruSys Blog App is a React application that allows users to view, create, edit, and delete blog posts. It interacts with the GuruSystems Blog API to fetch and update blog post data.
 
 ## Features
 1. View all blog posts
@@ -29,7 +29,7 @@ Install dependencies using npm or yarn:
     yarn install
     ```
 
-Configuration
+## Configuration
 Create a .env file in the root directory of the project and define the necessary environment variables. These might include API endpoint URLs or any other configurations specific to your deployment environment.
 
 Example .env file:
