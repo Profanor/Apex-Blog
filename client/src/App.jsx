@@ -10,6 +10,7 @@ import PostDetail from './components/PostDetail';
 import CreatePost from './components/Posts';
 import EditPost from './components/EditPost';
 import Navbar from './components/Navbar';
+import Footer from './components/Footer';
 
 
 const App = () => {
@@ -29,6 +30,7 @@ const App = () => {
           {/* Conditionally render CreatePost based on authentication */}
           {!isAuthenticated && <Route path="/create-post" element={<CreatePost />} />}
         </Routes>
+        <Footer />
     </Router>
     </AuthProvider>
   )
