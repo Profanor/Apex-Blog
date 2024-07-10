@@ -23,7 +23,7 @@ const AuthProvider = ({ children }) => {
   const login = (token) => {
     localStorage.setItem('token', token);
     const decodedToken = jwtDecode(token);
-    setUsername(decodedToken.username); // Ensure username is set after login
+    setUsername(decodedToken.username);
     setIsAuthenticated(true);
   };
 

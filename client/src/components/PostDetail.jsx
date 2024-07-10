@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
-import axios from 'axios';
 import { useParams, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../AuthContext';
+import axios from 'axios';
 
 const PostDetail = () => {
   const [post, setPost] = useState(null);
@@ -47,7 +47,7 @@ const PostDetail = () => {
   };
 
   const handleGoBack = () => {
-    navigate('/posts'); // Navigate back to posts
+    navigate('/posts'); 
   };
 
   if (!post) {

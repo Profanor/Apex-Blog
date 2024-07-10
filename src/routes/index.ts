@@ -4,7 +4,7 @@ import { Request, Response } from 'express';
 const router = express.Router();
 
 router.get('/', ( req: Request, res: Response )=> {
-    res.send('Welcome to GuruSys Blog API');
+    res.send('Welcome to GuruSystems Blog API');
 });
 
 export default router;

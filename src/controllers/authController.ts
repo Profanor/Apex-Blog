@@ -1,7 +1,8 @@
 import { Request, Response } from 'express';
+import { hashPassword, comparePassword } from '../utils/password';
 import jwt from 'jsonwebtoken';
 import User from '../models/Users';
-import { hashPassword, comparePassword } from '../utils/password';
+
 
 // Register a new user
 export const registerUser = async (req: Request, res: Response) => {

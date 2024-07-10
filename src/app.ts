@@ -22,7 +22,7 @@ app.use(morgan('dev'));
 // CORS configuration
 const corsOptions = {
   origin: '*',
-  optionsSuccessStatus: 200, // Some legacy browsers choke on 204
+  optionsSuccessStatus: 200,
 };
 
 app.use(cors(corsOptions));

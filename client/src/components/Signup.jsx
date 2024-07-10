@@ -16,7 +16,7 @@ const Signup = () => {
 
       await axios.post(`${apiUrl}/auth/register`, { username, password });
 
-      setShowModal(true);  // Show success modal
+      setShowModal(true);
     } catch (error) {
       console.error('Signup failed', error);
       if (error.response && error.response.status === 400) {
