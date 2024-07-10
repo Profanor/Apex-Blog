@@ -29,10 +29,14 @@ const Login = () => {
         navigate('/posts');
       }
     } catch (error) {
-      setError('Login failed. Please check your credentials and try again.');
       console.error('Login failed', error);
+      if (error.response && error.response.status === 400) {
+      setError(error.response.data.message);    
+    } else {
+      setError('Login failed due to server error'); 
     }
-  };
+  }
+};
 
   return (
     <div>

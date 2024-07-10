@@ -5,7 +5,8 @@ import { useNavigate } from 'react-router-dom';
 const Signup = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [showModal, setShowModal] = useState(false);  // Success modal state
+  const [showModal, setShowModal] = useState(false);  
+  const [error, setError] = useState(null);  
   const navigate = useNavigate();
 
   const handleSignup = async (e) => {
@@ -14,16 +15,21 @@ const Signup = () => {
       const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:4000';
 
       await axios.post(`${apiUrl}/auth/register`, { username, password });
-      
+
       setShowModal(true);  // Show success modal
     } catch (error) {
       console.error('Signup failed', error);
+      if (error.response && error.response.status === 400) {
+        setError(error.response.data.message);  // Set error message from server
+      } else {
+        setError('Signup failed due to server error'); 
+      }
     }
   };
 
   const handleCloseModal = () => {
     setShowModal(false);
-    navigate('/login');  // Navigate to login after closing the modal
+    navigate('/login'); 
   };
 
   return (
@@ -31,6 +37,7 @@ const Signup = () => {
       <div className="flex items-center justify-center h-full">
         <div className="bg-white p-8 mt-10 rounded shadow-md w-96">
           <h2 className="text-2xl font-bold mb-6">Signup</h2>
+          {error && <p className="text-red-500 mb-4">{error}</p>} {/* Display error message */}
           <form onSubmit={handleSignup}>
             <div className="mb-4">
               <label className="block text-gray-700">Username</label>
