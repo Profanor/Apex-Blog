@@ -5,7 +5,6 @@ import { useNavigate } from 'react-router-dom';
 const CreatePost = () => {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
-  const [author, setAuthor] = useState('');
   const [image, setImage] = useState(null);
   const [error, setError] = useState('');
   const [postCreated, setPostCreated] = useState(false);
@@ -19,10 +18,6 @@ const CreatePost = () => {
     setContent(event.target.value);
   };
 
-  const handleAuthorChange = (event) => {
-    setAuthor(event.target.value);
-  };
-
   const handleImageChange = (event) => {
     setImage(event.target.files[0]);
   };
@@ -30,14 +25,13 @@ const CreatePost = () => {
   const clearForm = () => {
     setTitle('');
     setContent('');
-    setAuthor('');
     setImage(null);
   };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    if (!title.trim() || !content.trim() || !author.trim()) {
+    if (!title.trim() || !content.trim()) {
       setError('All fields are required');
       return;
     }
@@ -45,7 +39,6 @@ const CreatePost = () => {
     const formData = new FormData();
     formData.append('title', title);
     formData.append('content', content);
-    formData.append('author', author);
     if (image) {
       formData.append('image', image);
     }
@@ -106,17 +99,6 @@ const CreatePost = () => {
             id="content"
             value={content}
             onChange={handleContentChange}
-            required
-            className="mt-1 p-2 border border-gray-300 rounded-md w-full focus:outline-none focus:ring focus:ring-indigo-200 text-gray-800"
-          />
-        </div>
-        <div className="mb-4">
-          <label htmlFor="author" className="block text-sm font-medium text-gray-700">Author:</label>
-          <input
-            type="text"
-            id="author"
-            value={author}
-            onChange={handleAuthorChange}
             required
             className="mt-1 p-2 border border-gray-300 rounded-md w-full focus:outline-none focus:ring focus:ring-indigo-200 text-gray-800"
           />

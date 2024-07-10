@@ -45,12 +45,12 @@ const Posts = () => {
             <p className="text-gray-700 mt-2">{post.content}</p>
             <small className="text-gray-500">By {post.author}</small>
             {post.image && (
-              <div className="mt-4 max-w-full overflow-hidden" style={{ maxHeight: '600px' }}>
+              <div className="mt-4 flex justify-flex-start">
                 <img
                   src={`data:${post.image.contentType};base64,${arrayBufferToBase64(post.image.data.data)}`}
                   alt="Post"
                   className="rounded-lg"
-                  style={{ maxWidth: '100%', height: 'auto' }}
+                  style={{ maxWidth: '100%', maxHeight: '300px', objectFit: 'contain' }}
                 />
               </div>
             )}

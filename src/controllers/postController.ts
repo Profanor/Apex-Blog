@@ -21,11 +21,11 @@ export const createPost = [
     upload.single('image'),
     async (req: AuthenticatedRequest, res: Response) => {
         try {
-            const { title, content, author } = req.body;
+            const { title, content } = req.body;
             const image = req.file;
 
             // input validation check for empty fields
-            if (!title || !content || !author) {
+            if (!title || !content) {
                 return res.status(400).json({ error: 'All fields are required' });
             }
 
@@ -98,10 +98,6 @@ export const updatePost = async (req: AuthenticatedRequest, res: Response) => {
         if (!post) {
             return res.status(404).json({ error: 'Post not found' });
         }
-
-         // Debugging logs
-         console.log('Post Author:', post.author);
-         console.log('User ID:', req.user?.id);
 
         // Correct authorization check
         if (post.author !== req.user?.username) {

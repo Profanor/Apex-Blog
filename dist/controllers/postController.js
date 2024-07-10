@@ -32,16 +32,15 @@ exports.createPost = [
         try {
             const { title, content } = req.body;
             const image = req.file;
-            const author = (_a = req.user) === null || _a === void 0 ? void 0 : _a.id;
             // input validation check for empty fields
-            if (!title || !content || !author) {
+            if (!title || !content) {
                 return res.status(400).json({ error: 'All fields are required' });
             }
             // create a new blog post
             const newPost = new Posts_1.default({
                 title,
                 content,
-                author,
+                author: (_a = req.user) === null || _a === void 0 ? void 0 : _a.username,
                 image: image ? {
                     data: image.buffer,
                     contentType: image.mimetype
@@ -71,8 +70,7 @@ exports.getPosts = getPosts;
 const getPostById = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const postId = req.params.postId;
-        // Populate the author field with the username
-        const post = yield Posts_1.default.findById(postId).populate('author', 'username');
+        const post = yield Posts_1.default.findById(postId);
         if (!post) {
             return res.status(404).json({ error: 'Post with the specified ID was not found' });
         }
@@ -101,7 +99,8 @@ const updatePost = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
         // Debugging logs
         console.log('Post Author:', post.author);
         console.log('User ID:', (_a = req.user) === null || _a === void 0 ? void 0 : _a.id);
-        if (post.author.toString() !== ((_b = req.user) === null || _b === void 0 ? void 0 : _b.id)) {
+        // Correct authorization check
+        if (post.author !== ((_b = req.user) === null || _b === void 0 ? void 0 : _b.username)) {
             return res.status(403).json({ error: 'You are not authorized to update this post' });
         }
         // Update the post
@@ -128,7 +127,8 @@ const deletePost = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
         // Debugging logs
         console.log('Post Author:', post.author);
         console.log('User ID:', (_a = req.user) === null || _a === void 0 ? void 0 : _a.id);
-        if (post.author.toString() !== ((_b = req.user) === null || _b === void 0 ? void 0 : _b.id)) {
+        // Correct authorization check
+        if (post.author !== ((_b = req.user) === null || _b === void 0 ? void 0 : _b.username)) {
             return res.status(403).json({ error: 'You are not authorized to delete this post' });
         }
         yield Posts_1.default.findByIdAndDelete(postId);

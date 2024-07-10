@@ -10,15 +10,14 @@ GuruSys Blog App is a React application that allows users to view, create, edit,
 
 
 ## Setup
-Prerequisites
 Before you begin, ensure you have met the following requirements:
 
-Node.js & npm or yarn installed on your machine
-Installation
+- Node.js & npm or yarn installed on your machine
+
+## Installation
 To get started with GuruSys Blog App, follow these steps:
 
-Clone the repository:
-
+- Clone the repository:
 
 git clone <repository-url>
 cd guru-sys-blog-app
@@ -43,7 +42,7 @@ To run the GuruSys Blog App locally, use the following command:
 
 
 npm start
-# or
+## or
 yarn start
 This will start the development server. Open http://localhost:3000 in your browser to view the app.
 
@@ -52,7 +51,7 @@ For production deployment, you can build the app using:
 
 
 npm run build
-# or
+## or
 yarn build
 This will create an optimized production build of your application in the build folder.
 
@@ -70,7 +69,7 @@ The API is deployed and accessible at the following link:
 [https://guru-sys-blog-api.vercel.app](https://guru-sys-blog-api.vercel.app)
 
 
-# Contributing
+## Contributing
 Contributions are welcome! 
 
 ## License

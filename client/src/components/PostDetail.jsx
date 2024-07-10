@@ -54,11 +54,31 @@ const PostDetail = () => {
     return <div>Loading...</div>;
   }
 
+  // Function to convert ArrayBuffer to base64
+  const arrayBufferToBase64 = (buffer) => {
+    let binary = '';
+    const bytes = new Uint8Array(buffer);
+    for (let i = 0; i < bytes.byteLength; i++) {
+      binary += String.fromCharCode(bytes[i]);
+    }
+    return window.btoa(binary);
+  };
+
   return (
     <div className="container mx-auto p-4">
       <h1 className="text-3xl font-bold mb-6">{post.title}</h1>
       <p className="text-gray-700 mt-2">{post.content}</p>
       <small className="text-gray-500">By {post.author}</small>
+      {post.image && (
+        <div className="mt-4 flex justify-flex-start">
+          <img
+            src={`data:${post.image.contentType};base64,${arrayBufferToBase64(post.image.data.data)}`}
+            alt="Post"
+            className="rounded-lg"
+            style={{ maxWidth: '100%', maxHeight: '500px', objectFit: 'contain' }}
+          />
+        </div>
+      )}
       {isAuthenticated && username === post.author && (
         <div className="mt-4">
           <button
