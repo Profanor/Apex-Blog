@@ -9,7 +9,7 @@ const Posts = () => {
     const fetchPosts = async () => {
       try {
         const token = localStorage.getItem('token');
-        const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:4000'; // Use environment variable or default URL
+        const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:4000';
         const config = token ? { headers: { Authorization: `Bearer ${token}` } } : {};
 
         const response = await axios.get(`${apiUrl}/api/posts`, config);
@@ -63,5 +63,4 @@ const Posts = () => {
     </div>
   );
 };
-
 export default Posts;

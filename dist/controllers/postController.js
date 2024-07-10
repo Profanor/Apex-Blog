@@ -83,7 +83,7 @@ const getPostById = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
 exports.getPostById = getPostById;
 // Update an existing blog post
 const updatePost = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    var _a, _b;
+    var _a;
     try {
         const { title, content } = req.body;
         // input validation check for empty fields
@@ -96,11 +96,8 @@ const updatePost = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
         if (!post) {
             return res.status(404).json({ error: 'Post not found' });
         }
-        // Debugging logs
-        console.log('Post Author:', post.author);
-        console.log('User ID:', (_a = req.user) === null || _a === void 0 ? void 0 : _a.id);
         // Correct authorization check
-        if (post.author !== ((_b = req.user) === null || _b === void 0 ? void 0 : _b.username)) {
+        if (post.author !== ((_a = req.user) === null || _a === void 0 ? void 0 : _a.username)) {
             return res.status(403).json({ error: 'You are not authorized to update this post' });
         }
         // Update the post

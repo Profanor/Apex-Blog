@@ -47,7 +47,7 @@ const loginUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const user = yield Users_1.default.findOne({ username });
         if (!user) {
-            return res.status(400).json({ message: 'Invalid Credentials' });
+            return res.status(400).json({ error: 'UserNotSignedUp', message: 'User not found. Please sign up first.' });
         }
         // Ensure user.password is a string
         if (typeof user.password !== 'string') {

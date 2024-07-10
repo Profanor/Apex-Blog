@@ -13,7 +13,7 @@ const Login = () => {
   const handleLogin = async (e) => {
     e.preventDefault();
     if (!username || !password) {
-      setError('Please fill in both fields'); // Set error message if fields are empty
+      setError('Please fill in both fields');
       return;
     }
 
@@ -22,11 +22,14 @@ const Login = () => {
 
       const response = await axios.post(`${apiUrl}/auth/login`, { username, password });
 
-      login(response.data.token);
-      
-      navigate('/posts');
+      if (response.data.message === 'User not found. Please sign up first.') {
+        setError('User not found. Please sign up before logging in.');
+      } else {
+        login(response.data.token);
+        navigate('/posts');
+      }
     } catch (error) {
-      setError('Login failed. Please check your credentials and try again.');  // Set error message on failure
+      setError('Login failed. Please check your credentials and try again.');
       console.error('Login failed', error);
     }
   };
@@ -36,7 +39,7 @@ const Login = () => {
       <div className="flex items-center justify-center min-h-screen bg-gray-100">
         <div className="bg-white p-8 rounded shadow-md w-96">
           <h2 className="text-2xl font-bold mb-6">Login</h2>
-          {error && (  // Conditionally render error message
+          {error && (
             <div className="mb-4 text-red-500">
               {error}
             </div>
