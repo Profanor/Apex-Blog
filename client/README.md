@@ -64,8 +64,8 @@ This will create an optimized production build of your application in the build 
 - Vercel (Deployment)
 
 
-## Deployed API
-The API is deployed and accessible at the following link:
+## Deployed Service
+The React UI is deployed and accessible at the following link:
 [https://guru-sys-blog-api.vercel.app](https://guru-sys-blog-api.vercel.app)
 
 

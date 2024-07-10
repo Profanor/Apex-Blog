@@ -89,7 +89,7 @@ The ability to create, read, update and delete blog posts.
    - URL: `/api/posts/:postId`
 
 Please refer to the API docs through the url for detailed API documentation.
-[]()
+[https://documenter.getpostman.com/view/31288774/2sA3e48Tmj](https://documenter.getpostman.com/view/31288774/2sA3e48Tmj)
 
 
 ## Deployed API
