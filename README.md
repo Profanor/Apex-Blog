@@ -50,10 +50,12 @@ The ability to create, read, update and delete blog posts.
 ## Technologies Used
 - Nodejs
 - Express.js
+- Jsonwebtoken
 - TypeScript
 - MongoDB
 - Mongoose
 - Nodemon (for development)
+- Render (Deployment)
 
 
 ## API Endpoints
