@@ -67,8 +67,7 @@ The ability to create, read, update and delete blog posts.
      ```json
      {
        "title": "Sample Blog Post",
-       "content": "This is the content of the blog post.",
-       "author": "John Doe"
+       "content": "This is the content of the blog post."
      }
      ```
 
