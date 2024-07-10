@@ -32,35 +32,46 @@ const Posts = () => {
     return window.btoa(binary);
   };
 
+  // Function to truncate text
+  const truncateText = (text, maxLength) => {
+    if (text.length <= maxLength) {
+      return text;
+    }
+    return `${text.substring(0, maxLength)}...`;
+  };
+
   return (
-    <div className="container mx-auto p-4">
-      <h1 className="text-3xl font-bold mb-6">Blog Posts</h1>
-      {posts.map((post) => (
-        <Link key={post._id} to={`/posts/${post._id}`}>
-          <div
-            className="mb-4 p-4 border border-gray-300 rounded-lg shadow-md hover:shadow-lg transition duration-300"
-            style={{ cursor: 'pointer' }}
-          >
-            <h2 className="text-2xl font-semibold">{post.title}</h2>
-            <p className="text-gray-700 mt-2">{post.content}</p>
-            <small className="text-gray-500">By {post.author}</small>
-            {post.image && (
-              <div className="mt-4 flex justify-flex-start">
-                <img
-                  src={`data:${post.image.contentType};base64,${arrayBufferToBase64(post.image.data.data)}`}
-                  alt="Post"
-                  className="rounded-lg"
-                  style={{ maxWidth: '100%', maxHeight: '300px', objectFit: 'contain' }}
-                />
-              </div>
-            )}
-          </div>
-        </Link>
-      ))}
-      <div className="mt-8 text-center">
+    <div className="min-h-screen p-4">
+      <h1 className="text-3xl font-bold mb-4">Blog Posts</h1>
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+        {posts.map((post) => (
+          <Link key={post._id} to={`/posts/${post._id}`}>
+            <div
+              className="p-4 border border-gray-300 rounded-lg shadow-md hover:shadow-lg transition duration-300 flex flex-col"
+              style={{ cursor: 'pointer', height: '400px' }} // Uniform height for all post containers
+            >
+              {post.image && (
+                <div className="h-48 overflow-hidden">
+                  <img
+                    src={`data:${post.image.contentType};base64,${arrayBufferToBase64(post.image.data.data)}`}
+                    alt="Post"
+                    className="w-full h-full object-cover rounded-lg"
+                  />
+                </div>
+              )}
+              <h2 className="text-2xl font-semibold mt-4">{post.title}</h2>
+              <p className="text-gray-700 mt-2">{truncateText(post.content, 100)}</p> {/* Limiting content length */}
+              <Link to={`/posts/${post._id}`} className="text-blue-600 hover:underline mt-2">Read More</Link>
+              <small className="text-gray-500 mt-2">By {post.author}</small>
+            </div>
+          </Link>
+        ))}
+      </div>
+      <div className="mt-4 text-center">
         <p className="text-lg text-gray-600">Want to create a post? <Link to="/signup" className="text-blue-600 hover:underline">Sign up</Link> now!</p>
       </div>
     </div>
   );
 };
+
 export default Posts;
