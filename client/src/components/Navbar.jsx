@@ -1,11 +1,14 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useRef, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../AuthContext';
+import SearchBar from './SearchBar';
 
-const Navbar = () => {
+const Navbar = ({ searchQuery, setSearchQuery }) => {
   const { isAuthenticated, logout, user } = useContext(AuthContext);
   const navigate = useNavigate();
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const dropdownRef = useRef(null);
 
   const handleLogout = () => {
     logout();
@@ -16,35 +19,56 @@ const Navbar = () => {
     setDropdownOpen(!dropdownOpen);
   };
 
-  const closeDropdown = () => {
-    setDropdownOpen(false);
+  const toggleMenu = () => {
+    setMenuOpen(!menuOpen);
   };
+
+  const closeDropdown = (event) => {
+    if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+      setDropdownOpen(false);
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener('mousedown', closeDropdown);
+    return () => {
+      document.removeEventListener('mousedown', closeDropdown);
+    };
+  }, []);
 
   return (
     <nav className="bg-gray-800 p-4">
       <div className="container mx-auto flex justify-between items-center">
-        <div className="text-white text-lg font-bold">My Blog</div>
         <div className="flex items-center space-x-4">
-          <Link to="/" className="text-white hover:text-gray-300">Home</Link>
-          
-          {isAuthenticated ? (
-            <>
+          <div className="text-white text-lg font-bold">My Blog</div>
+          <div className="hidden md:flex items-center space-x-4">
+            <Link to="/" className="text-white hover:text-gray-300">Home</Link>
+            {isAuthenticated ? (
               <Link to="/create-post" className="text-white hover:text-gray-300">Create Post</Link>
-              <div className="relative">
-                <div className="flex items-center space-x-2 cursor-pointer" onClick={toggleDropdown}>
-                  {user.profilePicture ? (
-                    <div className="w-8 h-8 rounded-full border-2 border-orange-500 overflow-hidden">
-                      <img src={user.profilePicture} alt={user.username} className="w-full h-full object-cover" />
-                    </div>
-                  ) : (
-                    <div className="w-8 h-8 rounded-full border-2 border-orange-500 flex items-center justify-center text-white bg-gray-400">
-                      {user.username.charAt(0).toUpperCase()}
-                    </div>
-                  )}
-                  <span className="text-white">{`Hi, ${user.username}`}</span> {/* Greeting added here */}
-                </div>
+            ) : (
+              <>
+                <Link to="/signup" className="text-white hover:text-gray-300">Signup</Link>
+                <Link to="/login" className="text-white hover:text-gray-300">Login</Link>
+              </>
+            )}
+          </div>
+        </div>
+        <div className="flex items-center space-x-4">
+          {isAuthenticated && (
+            <>
+              <div className="hidden md:flex relative items-center space-x-2 cursor-pointer" onClick={toggleDropdown} ref={dropdownRef}>
+                {user.profilePicture ? (
+                  <div className="w-8 h-8 rounded-full border-2 border-orange-500 overflow-hidden">
+                    <img src={user.profilePicture} alt={user.username} className="w-full h-full object-cover" />
+                  </div>
+                ) : (
+                  <div className="w-8 h-8 rounded-full border-2 border-orange-500 flex items-center justify-center text-white bg-gray-400">
+                    {user.username.charAt(0).toUpperCase()}
+                  </div>
+                )}
+                <span className="text-white">{`Hi, ${user.username}`}</span>
                 {dropdownOpen && (
-                  <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-2 z-20" onBlur={closeDropdown}>
+                  <div className="absolute top-10 right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-2 z-20">
                     <Link to="/profile" className="block px-4 py-2 text-gray-800 hover:bg-gray-200">Profile</Link>
                     <button onClick={handleLogout} className="block w-full text-left px-4 py-2 text-gray-800 hover:bg-gray-200">Logout</button>
                   </div>
@@ -58,15 +82,39 @@ const Navbar = () => {
                 </Link>
                 <span className="absolute top-0 right-0 block h-2 w-2 bg-red-600 rounded-full ring-2 ring-white"></span>
               </div>
-            </>
-          ) : (
-            <>
-              <Link to="/signup" className="text-white hover:text-gray-300">Signup</Link>
-              <Link to="/login" className="text-white hover:text-gray-300">Login</Link>
+              <SearchBar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
             </>
           )}
         </div>
+        <div className="md:hidden flex items-center">
+          <button className="text-white" onClick={toggleMenu}>
+            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16m-7 6h7"></path>
+            </svg>
+          </button>
+        </div>
       </div>
+      {menuOpen && (
+        <div className="md:hidden">
+          <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+            <Link to="/" className="block text-white hover:text-gray-300">Home</Link>
+            {isAuthenticated ? (
+              <Link to="/create-post" className="block text-white hover:text-gray-300">Create Post</Link>
+            ) : (
+              <>
+                <Link to="/signup" className="block text-white hover:text-gray-300">Signup</Link>
+                <Link to="/login" className="block text-white hover:text-gray-300">Login</Link>
+              </>
+            )}
+            {isAuthenticated && (
+              <>
+                <Link to="/profile" className="block text-white hover:text-gray-300">Profile</Link>
+                <button onClick={handleLogout} className="block w-full text-left text-white hover:text-gray-300">Logout</button>
+              </>
+            )}
+          </div>
+        </div>
+      )}
     </nav>
   );
 };

@@ -2,11 +2,13 @@ import React, { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../AuthContext';
 import axios from 'axios';
+import Spinner from './Spinner';
 
 const Login = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
   const { login } = useContext(AuthContext);
   const navigate = useNavigate();
 
@@ -16,6 +18,8 @@ const Login = () => {
       setError('Please fill in both fields');
       return;
     }
+
+    setLoading(true); // Show spinner during login request
 
     try {
       const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:4000';
@@ -31,12 +35,14 @@ const Login = () => {
     } catch (error) {
       console.error('Login failed', error);
       if (error.response && error.response.status === 400) {
-      setError(error.response.data.message);    
-    } else {
-      setError('Login failed due to server error'); 
+        setError(error.response.data.message);
+      } else {
+        setError('Login failed due to server error');
+      }
     }
-  }
-};
+
+    setLoading(false); 
+  };
 
   return (
     <div>
@@ -72,8 +78,9 @@ const Login = () => {
             <button
               type="submit"
               className="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600"
+              disabled={loading} // Disable button when loading
             >
-              Login
+              {loading ? <Spinner /> : 'Login'} {/* Show spinner or text based on loading state */}
             </button>
           </form>
         </div>

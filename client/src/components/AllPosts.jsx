@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 import Spinner from './Spinner';
 
-const Posts = () => {
+const Posts = ({ searchQuery }) => {
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true); 
 
@@ -16,7 +16,7 @@ const Posts = () => {
 
         const response = await axios.get(`${apiUrl}/api/posts`, config);
         setPosts(response.data.posts);
-        setLoading(false); // Set loading to false after fetching posts
+        setLoading(false); 
       } catch (error) {
         console.error('Failed to fetch posts:', error.response?.data || error.message);
         setLoading(false); 
@@ -25,6 +25,12 @@ const Posts = () => {
 
     fetchPosts();
   }, []);
+
+  const filteredPosts = posts.filter(post =>
+    post.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    post.content.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    post.author.toLowerCase().includes(searchQuery.toLowerCase())
+  );
 
   // Function to convert ArrayBuffer to base64
   const arrayBufferToBase64 = (buffer) => {
@@ -49,14 +55,14 @@ const Posts = () => {
       <h1 className="text-3xl font-bold mb-4">Blog Posts</h1>
       
       {loading ? (
-        <Spinner /> // Show spinner while loading
+        <Spinner /> 
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-          {posts.map((post) => (
+          {filteredPosts.map((post) => (
             <Link key={post._id} to={`/posts/${post._id}`}>
               <div
                 className="p-4 border border-gray-300 rounded-lg shadow-md hover:shadow-lg transition duration-300 flex flex-col"
-                style={{ cursor: 'pointer', height: '400px' }} // Uniform height for all post containers
+                style={{ cursor: 'pointer', height: '400px' }} 
               >
                 {post.image && (
                   <div className="h-48 overflow-hidden">
@@ -71,16 +77,6 @@ const Posts = () => {
                 <p className="text-gray-700 mt-2">{truncateText(post.content, 100)}</p>
                 <Link to={`/posts/${post._id}`} className="text-blue-600 hover:underline mt-2">Read More</Link>
                 <div className="flex items-center space-x-4 mt-2">
-                  {/* <button className="text-gray-500 hover:text-gray-700">
-                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 15l7-7 7 7"></path>
-                    </svg>
-                  </button> */}
-                  {/* <button className="text-gray-500 hover:text-gray-700">
-                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16h6"></path>
-                    </svg>
-                  </button> */}
                 </div>
                 <small className="text-gray-500 mt-2">By {post.author}</small>
               </div>

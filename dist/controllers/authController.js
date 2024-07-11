@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.loginUser = exports.registerUser = void 0;
+exports.userProfile = exports.loginUser = exports.registerUser = void 0;
 const password_1 = require("../utils/password");
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const Users_1 = __importDefault(require("../models/Users"));
@@ -30,7 +30,7 @@ const registerUser = (req, res) => __awaiter(void 0, void 0, void 0, function* (
             return res.status(400).json({ message: 'Username already taken' });
         }
         const hashedPassword = yield (0, password_1.hashPassword)(password);
-        let profilePhotoBase64;
+        let profilePhotoBase64 = '';
         if (profilePhoto) {
             profilePhotoBase64 = `data:${profilePhoto.mimetype};base64,${profilePhoto.buffer.toString('base64')}`;
         }
@@ -43,6 +43,7 @@ const registerUser = (req, res) => __awaiter(void 0, void 0, void 0, function* (
         res.status(201).json({ message: 'User created' });
     }
     catch (error) {
+        console.error('Error registering user:', error);
         res.status(500).json({ message: 'Server Error' });
     }
 });
@@ -70,7 +71,22 @@ const loginUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         res.json({ token, user: { id: user._id, username: user.username, profilePhoto: user.profilePhoto } });
     }
     catch (error) {
+        console.error('Error logging in user:', error);
         res.status(500).json({ message: 'Server Error' });
     }
 });
 exports.loginUser = loginUser;
+const userProfile = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const user = yield Users_1.default.findById(req.params.id);
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+        res.json({ username: user.username, profilePhoto: user.profilePhoto });
+    }
+    catch (error) {
+        console.error('Error fetching user:', error);
+        res.status(500).json({ message: 'Server Error' });
+    }
+});
+exports.userProfile = userProfile;
