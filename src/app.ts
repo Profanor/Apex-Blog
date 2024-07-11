@@ -5,7 +5,6 @@ import morgan from 'morgan';
 /**------------------------ */
 import indexRoute from './routes/index';
 import authRoutes from './routes/authRoutes';
-import authProfileRoute from './routes/authProfile';
 import postRoutes from './routes/postRoutes';
 import main from './config/database';
 
@@ -32,7 +31,6 @@ app.use(cors(corsOptions));
 //Routes
 app.use('/', indexRoute);
 app.use('/auth', authRoutes);
-app.use('/auth', authProfileRoute);
 app.use('/api/posts', postRoutes);
 
 
