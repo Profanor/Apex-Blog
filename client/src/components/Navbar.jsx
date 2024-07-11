@@ -42,13 +42,13 @@ const Navbar = ({ searchQuery, setSearchQuery }) => {
         <div className="flex items-center space-x-4">
           <div className="text-white text-lg font-bold">My Blog</div>
           <div className="hidden md:flex items-center space-x-4">
-            <Link to="/" className="text-white hover:text-gray-300">Home</Link>
+            <Link to="/" className="text-white hover:text-gray-300 hover:bg-gray-700 py-2 px-4 rounded transition duration-300">Home</Link>
             {isAuthenticated ? (
-              <Link to="/create-post" className="text-white hover:text-gray-300">Create Post</Link>
+              <Link to="/create-post" className="text-white hover:text-gray-300 hover:bg-gray-700 py-2 px-4 rounded transition duration-300">Create Post</Link>
             ) : (
               <>
-                <Link to="/signup" className="text-white hover:text-gray-300">Signup</Link>
-                <Link to="/login" className="text-white hover:text-gray-300">Login</Link>
+                <Link to="/signup" className="text-white hover:text-gray-300 hover:bg-gray-700 py-2 px-4 rounded transition duration-300">Signup</Link>
+                <Link to="/login" className="text-white hover:text-gray-300 hover:bg-gray-700 py-2 px-4 rounded transition duration-300">Login</Link>
               </>
             )}
           </div>
@@ -68,8 +68,8 @@ const Navbar = ({ searchQuery, setSearchQuery }) => {
                 )}
                 <span className="text-white">{`Hi, ${user.username}`}</span>
                 <div className={`absolute top-10 right-0 mt-2 bg-white rounded-md shadow-lg py-2 z-20 ${dropdownOpen ? 'opacity-100 visible' : 'opacity-0 invisible'}`} style={{ transition: 'opacity 0.3s ease, visibility 0.3s' }}>
-                  <Link to="/profile" className="block px-4 py-2 text-gray-800 hover:bg-gray-200">Profile</Link>
-                  <button onClick={handleLogout} className="block w-full text-left px-4 py-2 text-gray-800 hover:bg-gray-200">Logout</button>
+                  <Link to="/profile" className="block px-4 py-2 text-gray-800 hover:bg-gray-700 hover:text-white transition duration-300">Profile</Link>
+                  <button onClick={handleLogout} className="block w-full text-left px-4 py-2 text-gray-800 hover:bg-gray-700 hover:text-white transition duration-300">Logout</button>
                 </div>
               </div>
               <div className="relative">
@@ -95,19 +95,19 @@ const Navbar = ({ searchQuery, setSearchQuery }) => {
       {menuOpen && (
         <div className="md:hidden">
           <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
-            <Link to="/" className="block text-white hover:text-gray-300">Home</Link>
+            <Link to="/" className="block text-white hover:text-gray-300 hover:bg-gray-700 py-2 px-4 rounded transition duration-300">Home</Link>
             {isAuthenticated ? (
-              <Link to="/create-post" className="block text-white hover:text-gray-300">Create Post</Link>
+              <Link to="/create-post" className="block text-white hover:text-gray-300 hover:bg-gray-700 py-2 px-4 rounded transition duration-300">Create Post</Link>
             ) : (
               <>
-                <Link to="/signup" className="block text-white hover:text-gray-300">Signup</Link>
-                <Link to="/login" className="block text-white hover:text-gray-300">Login</Link>
+                <Link to="/signup" className="block text-white hover:text-gray-300 hover:bg-gray-700 py-2 px-4 rounded transition duration-300">Signup</Link>
+                <Link to="/login" className="block text-white hover:text-gray-300 hover:bg-gray-700 py-2 px-4 rounded transition duration-300">Login</Link>
               </>
             )}
             {isAuthenticated && (
               <>
-                <Link to="/profile" className="block text-white hover:text-gray-300">Profile</Link>
-                <button onClick={handleLogout} className="block w-full text-left text-white hover:text-gray-300">Logout</button>
+                <Link to="/profile" className="block text-white hover:text-gray-300 hover:bg-gray-700 py-2 px-4 rounded transition duration-300">Profile</Link>
+                <button onClick={handleLogout} className="block w-full text-left text-white hover:text-gray-300 hover:bg-gray-700 py-2 px-4 rounded transition duration-300">Logout</button>
               </>
             )}
           </div>
