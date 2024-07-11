@@ -67,12 +67,10 @@ const Navbar = ({ searchQuery, setSearchQuery }) => {
                   </div>
                 )}
                 <span className="text-white">{`Hi, ${user.username}`}</span>
-                {dropdownOpen && (
-                  <div className="absolute top-10 right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-2 z-20">
-                    <Link to="/profile" className="block px-4 py-2 text-gray-800 hover:bg-gray-200">Profile</Link>
-                    <button onClick={handleLogout} className="block w-full text-left px-4 py-2 text-gray-800 hover:bg-gray-200">Logout</button>
-                  </div>
-                )}
+                <div className={`absolute top-10 right-0 mt-2 bg-white rounded-md shadow-lg py-2 z-20 ${dropdownOpen ? 'opacity-100 visible' : 'opacity-0 invisible'}`} style={{ transition: 'opacity 0.3s ease, visibility 0.3s' }}>
+                  <Link to="/profile" className="block px-4 py-2 text-gray-800 hover:bg-gray-200">Profile</Link>
+                  <button onClick={handleLogout} className="block w-full text-left px-4 py-2 text-gray-800 hover:bg-gray-200">Logout</button>
+                </div>
               </div>
               <div className="relative">
                 <Link to="/notifications" className="text-white hover:text-gray-300">
