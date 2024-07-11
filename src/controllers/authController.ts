@@ -7,6 +7,7 @@ import User from '../models/Users';
 // Register a new user
 export const registerUser = async (req: Request, res: Response) => {
   const { username, password } = req.body;
+  const profilePhoto = req.file;
 
   if (!username || !password) {
     return res.status(400).json({ message: 'Username and password are required' });
@@ -22,11 +23,21 @@ export const registerUser = async (req: Request, res: Response) => {
 
     const hashedPassword = await hashPassword(password);
 
-    const newUser = new User({ username, password: hashedPassword });
+    let profilePhotoBase64 = '';
+    if (profilePhoto) {
+      profilePhotoBase64 = `data:${profilePhoto.mimetype};base64,${profilePhoto.buffer.toString('base64')}`;
+    }
+
+    const newUser = new User({ 
+      username, 
+      password: hashedPassword, 
+      profilePhoto: profilePhotoBase64
+    });
 
     await newUser.save();
     res.status(201).json({ message: 'User created' });
   } catch (error) {
+    console.error('Error registering user:', error);
     res.status(500).json({ message: 'Server Error' });
   }
 };
@@ -64,8 +75,23 @@ export const loginUser = async (req: Request, res: Response) => {
       { expiresIn: '1h' }
     );
 
-    res.json({ token, user: { id: user._id, username: user.username } });
+    res.json({ token, user: { id: user._id, username: user.username, profilePhoto: user.profilePhoto } });
   } catch (error) {
+    console.error('Error logging in user:', error);
+    res.status(500).json({ message: 'Server Error' });
+  }
+};
+
+
+export const userProfile = async (req: Request, res: Response) => {
+  try {
+    const user = await User.findById(req.params.id);
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+    res.json({ username: user.username, profilePhoto: user.profilePhoto });
+  } catch (error) {
+    console.error('Error fetching user:', error);
     res.status(500).json({ message: 'Server Error' });
   }
 };

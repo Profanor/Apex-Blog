@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 const Signup = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [profilePhoto, setProfilePhoto] = useState(null); // New state for profile photo
   const [showModal, setShowModal] = useState(false);  
   const [error, setError] = useState(null);  
   const navigate = useNavigate();
@@ -14,7 +15,18 @@ const Signup = () => {
     try {
       const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:4000';
 
-      await axios.post(`${apiUrl}/auth/register`, { username, password });
+      const formData = new FormData();
+      formData.append('username', username);
+      formData.append('password', password);
+      if (profilePhoto) {
+        formData.append('profilePhoto', profilePhoto);
+      }
+
+      await axios.post(`${apiUrl}/auth/register`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      });
 
       setShowModal(true);
     } catch (error) {
@@ -57,6 +69,14 @@ const Signup = () => {
                 onChange={(e) => setPassword(e.target.value)}
                 className="w-full p-2 border border-gray-300 rounded"
                 required
+              />
+            </div>
+            <div className="mb-6">
+              <label className="block text-gray-700">Profile Photo</label>
+              <input
+                type="file"
+                onChange={(e) => setProfilePhoto(e.target.files[0])}
+                className="w-full p-2 border border-gray-300 rounded"
               />
             </div>
             <button

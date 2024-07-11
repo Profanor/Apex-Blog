@@ -6,6 +6,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const router = express_1.default.Router();
 router.get('/', (req, res) => {
-    res.send('Welcome to GuruSys Blog API');
+    res.send('Welcome to GuruSystems Blog API');
 });
 exports.default = router;

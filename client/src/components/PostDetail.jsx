@@ -2,9 +2,11 @@ import React, { useState, useEffect, useContext } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../AuthContext';
 import axios from 'axios';
+import Spinner from './Spinner';
 
 const PostDetail = () => {
   const [post, setPost] = useState(null);
+  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
   const { isAuthenticated, username } = useContext(AuthContext);
   const { postId } = useParams();
@@ -15,8 +17,10 @@ const PostDetail = () => {
         const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:4000';
         const response = await axios.get(`${apiUrl}/api/posts/${postId}`);
         setPost(response.data.post);
+        setLoading(false);
       } catch (error) {
         console.error('Failed to fetch post:', error.response?.data || error.message);
+        setLoading(false);
       }
     };
 
@@ -37,22 +41,13 @@ const PostDetail = () => {
     }
   };
 
-  const handleEdit = async () => {
-    try {
-      // Navigate to edit page with postId as a URL parameter
-      navigate(`/edit/${postId}`);
-    } catch (error) {
-      console.error('Failed to redirect to edit page:', error.response?.data || error.message);
-    }
+  const handleEdit = () => {
+    navigate(`/edit/${postId}`);
   };
 
   const handleGoBack = () => {
     navigate('/posts'); 
   };
-
-  if (!post) {
-    return <div>Loading...</div>;
-  }
 
   // Function to convert ArrayBuffer to base64
   const arrayBufferToBase64 = (buffer) => {
@@ -63,6 +58,14 @@ const PostDetail = () => {
     }
     return window.btoa(binary);
   };
+
+  if (loading) {
+    return <Spinner />;
+  }
+
+  if (!post) {
+    return <div>Post not found.</div>;
+  }
 
   return (
     <div className="container mx-auto p-4">
