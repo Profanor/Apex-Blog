@@ -36,3 +36,21 @@
     transform: rotate(360deg);
   }
 }
+
+
+:root {
+  --background-color: #ffffff; /* light mode background */
+  --text-color: #333333; /* light mode text color */
+  --link-color: #007bff; /* light mode link color */
+  --button-background: #007bff; /* light mode button background */
+  /* Add more variables as needed */
+}
+
+/* Dark mode */
+.dark-mode {
+  --background-color: #333333; /* dark mode background */
+  --text-color: #ffffff; /* dark mode text color */
+  --link-color: #4ecdc4; /* dark mode link color */
+  --button-background: #4ecdc4; /* dark mode button background */
+  /* Adjust other variables for dark mode */
+}
