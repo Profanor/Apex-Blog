@@ -17,3 +17,24 @@ code {
 @tailwind components;
 @tailwind utilities;
 
+
+body {
+  transition: background-color 0.3s, color 0.3s;
+}
+
+body.dark-mode {
+  background-color: #121212;
+  color: #ffffff;
+}
+
+.dark-mode nav {
+  background-color: black;
+}
+
+.dark-mode .navbar-item {
+  color: red;
+}
+
+.dark-mode .navbar-item:hover {
+  color: #b3b3b3;
+}

@@ -1,5 +1,6 @@
 import './App.css';
-import React, { useState } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
+import { ThemeContext } from './ThemeContext';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { useAuthenticationStatus } from './useAuthStatus';
 import AuthProvider from './AuthContext';
@@ -14,6 +15,16 @@ import Navbar from './components/Navbar';
 const App = () => {
   const { isAuthenticated } = useAuthenticationStatus();
   const [searchQuery, setSearchQuery] = useState('');
+  const { darkMode } = useContext(ThemeContext);
+
+  useEffect(() => {
+    if (darkMode) {
+      document.body.classList.add('dark-mode');
+    } else {
+      document.body.classList.remove('dark-mode');
+    }
+  }, [darkMode]);
+
 
   return (
     <AuthProvider>

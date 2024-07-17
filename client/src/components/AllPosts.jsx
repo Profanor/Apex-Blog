@@ -74,7 +74,7 @@ const Posts = ({ searchQuery }) => {
                   </div>
                 )}
                 <h2 className="text-2xl font-semibold mt-4">{post.title}</h2>
-                <p className="text-gray-700 mt-2">{truncateText(post.content, 100)}</p>
+                <p className="text-black-700 mt-2">{truncateText(post.content, 100)}</p>
                 <Link to={`/posts/${post._id}`} className="text-blue-600 hover:underline mt-2">Read More</Link>
                 <div className="flex items-center space-x-4 mt-2">
                 </div>
@@ -86,7 +86,7 @@ const Posts = ({ searchQuery }) => {
       )}
 
       <div className="mt-4 text-center">
-        <p className="text-lg text-gray-600">Want to create a post? <Link to="/signup" className="text-blue-600 hover:underline">Sign up</Link> now!</p>
+        <p className="text-lg text-black-600">Want to create a post? <Link to="/signup" className="text-blue-600 hover:underline">Sign up</Link> now!</p>
       </div>
     </div>
   );
