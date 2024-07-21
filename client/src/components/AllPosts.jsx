@@ -1,11 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import Spinner from './Spinner';
+import { ThemeContext } from '../ThemeContext';
 
 const Posts = ({ searchQuery }) => {
   const [posts, setPosts] = useState([]);
-  const [loading, setLoading] = useState(true); 
+  const [loading, setLoading] = useState(true);
+  const { darkMode } = useContext(ThemeContext);
 
   useEffect(() => {
     const fetchPosts = async () => {
@@ -16,10 +18,10 @@ const Posts = ({ searchQuery }) => {
 
         const response = await axios.get(`${apiUrl}/api/posts`, config);
         setPosts(response.data.posts);
-        setLoading(false); 
+        setLoading(false);
       } catch (error) {
         console.error('Failed to fetch posts:', error.response?.data || error.message);
-        setLoading(false); 
+        setLoading(false);
       }
     };
 
@@ -32,7 +34,6 @@ const Posts = ({ searchQuery }) => {
     post.author.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
-  // Function to convert ArrayBuffer to base64
   const arrayBufferToBase64 = (buffer) => {
     let binary = '';
     const bytes = new Uint8Array(buffer);
@@ -42,7 +43,6 @@ const Posts = ({ searchQuery }) => {
     return window.btoa(binary);
   };
 
-  // Function to truncate text
   const truncateText = (text, maxLength) => {
     if (text.length <= maxLength) {
       return text;
@@ -55,7 +55,7 @@ const Posts = ({ searchQuery }) => {
       <h1 className="text-3xl font-bold mb-4">Blog Posts</h1>
       
       {loading ? (
-        <Spinner /> 
+        <Spinner darkMode={darkMode} />
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
           {filteredPosts.map((post) => (
