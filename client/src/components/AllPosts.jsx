@@ -52,7 +52,7 @@ const Posts = ({ searchQuery }) => {
 
   return (
     <div className="min-h-screen p-4">
-      <h1 className="text-3xl font-bold mb-4">Blog Posts</h1>
+      <h1 className="text-3xl font-bold mb-4">Latest Posts</h1>
       
       {loading ? (
         <Spinner /> 
