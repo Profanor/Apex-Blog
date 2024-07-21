@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { ThemeContext } from '../ThemeContext';
 import Spinner from './Spinner';
 import axios from 'axios';
 
@@ -10,6 +11,7 @@ const Signup = () => {
   const [showModal, setShowModal] = useState(false);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false); 
+  const { darkMode } = useContext(ThemeContext);
   const navigate = useNavigate();
 
   const handleSignup = async (e) => {
@@ -62,7 +64,7 @@ const Signup = () => {
                 type="text"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
-                className="w-full p-2 border border-gray-300 rounded"
+                className={`w-full p-2 border border-gray-300 rounded input ${darkMode ? 'dark-mode-input' : ''}`}
                 required
               />
             </div>
@@ -72,7 +74,7 @@ const Signup = () => {
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full p-2 border border-gray-300 rounded"
+                className={`w-full p-2 border border-gray-300 rounded input ${darkMode ? 'dark-mode-input' : ''}`}
                 required
               />
             </div>

@@ -38,3 +38,15 @@ body.dark-mode {
 .dark-mode .navbar-item:hover {
   color: #b3b3b3;
 }
+
+.dark-mode-input {
+  background-color: #333;
+  color: #fff;
+  border: 1px solid #fff;
+}
+
+.input {
+  background-color: #fff;
+  color: #000;
+  border: 1px solid #000;
+}
