@@ -75,7 +75,7 @@ const Navbar = ({ searchQuery, setSearchQuery }) => {
           <div className="hidden md:flex items-center space-x-4">
             <Link to="/" className="text-white hover:text-gray-300 hover:bg-gray-700 py-2 px-4 rounded transition duration-300">Home</Link>
             {isAuthenticated ? (
-              <Link to="/create-post" className="text-white hover:text-gray-300 hover:bg-gray-700 py-2 px-4 rounded transition duration-300">Create Post</Link>
+              <Link to="/create-post" className="text-white hover:text-gray-300 hover:bg-gray-700 py-2 px-4 rounded transition duration-300">Create post</Link>
             ) : (
               <>
                 <Link to="/signup" className="text-white hover:text-gray-300 hover:bg-gray-700 py-2 px-4 rounded transition duration-300">Signup</Link>
@@ -160,7 +160,7 @@ const Navbar = ({ searchQuery, setSearchQuery }) => {
           <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
             <Link to="/" className="block text-white hover:text-gray-300 hover:bg-gray-700 py-2 px-4 rounded transition duration-300">Home</Link>
             {isAuthenticated ? (
-              <Link to="/create-post" className="block text-white hover:text-gray-300 hover:bg-gray-700 py-2 px-4 rounded transition duration-300">Create Post</Link>
+              <Link to="/create-post" className="block text-white hover:text-gray-300 hover:bg-gray-700 py-2 px-4 rounded transition duration-300">Create post</Link>
             ) : (
               <>
                 <Link to="/signup" className="block text-white hover:text-gray-300 hover:bg-gray-700 py-2 px-4 rounded transition duration-300">Signup</Link>
@@ -178,7 +178,7 @@ const Navbar = ({ searchQuery, setSearchQuery }) => {
                 </button>
 
                 {/* Dark Mode Toggle */}
-                <div className="flex items-center">
+                <div className="flex items-center space-x-4">
                 <input
                   type="checkbox"
                   id="darkModeToggle"
@@ -194,8 +194,13 @@ const Navbar = ({ searchQuery, setSearchQuery }) => {
                   <span className="absolute right-1 top-1 w-3 h-3 rounded-full bg-yellow-500 transform transition-all duration-300" style={{ transform: darkMode ? 'translateX(0)' : 'translateX(-100%)' }}></span>
                   <span className="absolute left-1 top-1 w-3 h-3 rounded-full bg-gray-800 transform transition-all duration-300" style={{ transform: darkMode ? 'translateX(100%)' : 'translateX(0)' }}></span>
                 </label>
+                <span
+                  className={`text-sm font-medium ${darkMode ? 'text-white' : 'text-white'}`}
+                >
+                  {darkMode ? 'Dark Mode' : 'Light Mode'}
+                </span>
               </div>
-              
+
               </>
             )}
           </div>
