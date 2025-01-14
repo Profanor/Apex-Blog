@@ -56,7 +56,11 @@ const Signup = () => {
       <div className="flex items-center justify-center h-full">
         <div className="bg-white p-8 mt-10 rounded shadow-md w-96">
           <h2 className="text-2xl font-bold mb-6">Signup</h2>
-          {error && <p className="text-red-500 mb-4">{error}</p>}
+          {error && (
+            <p className="text-red-500 mb-4">
+              {error}
+            </p>
+            )}
           <form onSubmit={handleSignup}>
             <div className="mb-4">
               <label className="block text-gray-700">Username</label>

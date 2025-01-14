@@ -50,7 +50,7 @@ const Navbar = ({ searchQuery, setSearchQuery }) => {
 
   return (
     <nav className="bg-gray-800 p-4">
-      <div className="container mx-auto flex justify-between items-center">
+      <div className="container mx-auto flex justify-between items-center flex-wrap">
         <div className="flex items-center space-x-4">
           <div className="text-white text-lg font-bold">Apex</div>
           <div className="hidden md:flex items-center space-x-4">
