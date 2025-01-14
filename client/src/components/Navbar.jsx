@@ -5,38 +5,53 @@ import { ThemeContext } from '../ThemeContext';
 import SearchBar from './SearchBar';
 
 const Navbar = ({ searchQuery, setSearchQuery }) => {
+  // Contexts and Navigation
   const { isAuthenticated, logout, user } = useContext(AuthContext);
   const { darkMode, toggleDarkMode } = useContext(ThemeContext);
   const navigate = useNavigate();
+
+  // State Management
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [toggleChecked, setToggleChecked] = useState(darkMode);
+
+  // Refs
   const dropdownRef = useRef(null);
 
+  // Event Handlers
+
+  // Handle Logout
   const handleLogout = () => {
     logout();
     navigate('/');
   };
 
+  // Toggle Dropdown
   const toggleDropdown = () => {
     setDropdownOpen(!dropdownOpen);
   };
 
+  // Toggle Mobile Menu
   const toggleMenu = () => {
     setMenuOpen(!menuOpen);
   };
 
+  // Close Dropdown
   const closeDropdown = (event) => {
     if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
       setDropdownOpen(false);
     }
   };
 
+  // Handle Dark Mode Toggle
   const handleDarkModeToggle = () => {
     toggleDarkMode();
     setToggleChecked(!toggleChecked);
   };
 
+  // Effects
+
+  // Close Dropdown on Click Outside
   useEffect(() => {
     document.addEventListener('mousedown', closeDropdown);
     return () => {
@@ -44,13 +59,17 @@ const Navbar = ({ searchQuery, setSearchQuery }) => {
     };
   }, []);
 
+  // Sync Toggle State with Dark Mode
   useEffect(() => {
     setToggleChecked(darkMode);
   }, [darkMode]);
 
+
   return (
     <nav className="bg-gray-800 p-4">
       <div className="container mx-auto flex justify-between items-center flex-wrap">
+
+        {/* Branding and Navigation Links */}
         <div className="flex items-center space-x-4">
           <div className="text-white text-lg font-bold">Apex</div>
           <div className="hidden md:flex items-center space-x-4">
@@ -65,9 +84,12 @@ const Navbar = ({ searchQuery, setSearchQuery }) => {
             )}
           </div>
         </div>
+
+        {/* User Controls */}
         <div className="flex items-center space-x-4">
           {isAuthenticated && (
             <>
+              {/* Profile Dropdown */}
               <div className="hidden md:flex relative items-center space-x-2 cursor-pointer" onClick={toggleDropdown} ref={dropdownRef}>
                 {user.profilePicture ? (
                   <div className="w-8 h-8 rounded-full border-2 border-orange-500 overflow-hidden">
@@ -84,7 +106,9 @@ const Navbar = ({ searchQuery, setSearchQuery }) => {
                   <button onClick={handleLogout} className="block w-full text-left px-4 py-2 text-gray-800 hover:bg-gray-700 hover:text-white transition duration-300">Logout</button>
                 </div>
               </div>
-              <div className="relative">
+
+              {/* Notifications */}
+              <div className="relative hidden md:flex items-center">
                 <Link to="/notifications" className="text-white hover:text-gray-300">
                   <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6 6 0 10-12 0v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path>
@@ -92,8 +116,14 @@ const Navbar = ({ searchQuery, setSearchQuery }) => {
                 </Link>
                 <span className="absolute top-0 right-0 block h-2 w-2 bg-red-600 rounded-full ring-2 ring-white"></span>
               </div>
+
+              {/* Search Bar */}
+              <div className="hidden md:flex">
               <SearchBar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
-              <div className="flex items-center">
+              </div>
+
+              {/* Dark Mode Toggle */}
+              <div className=" items-center hidden sm:flex">
                 <input
                   type="checkbox"
                   id="darkModeToggle"
@@ -113,6 +143,8 @@ const Navbar = ({ searchQuery, setSearchQuery }) => {
             </>
           )}
         </div>
+
+        {/* Mobile Menu Button */}
         <div className="md:hidden flex items-center">
           <button className="text-white" onClick={toggleMenu}>
             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -121,6 +153,8 @@ const Navbar = ({ searchQuery, setSearchQuery }) => {
           </button>
         </div>
       </div>
+
+      {/* Mobile Menu */}
       {menuOpen && (
         <div className="md:hidden">
           <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
@@ -136,7 +170,32 @@ const Navbar = ({ searchQuery, setSearchQuery }) => {
             {isAuthenticated && (
               <>
                 <Link to="/profile" className="block text-white hover:text-gray-300 hover:bg-gray-700 py-2 px-4 rounded transition duration-300">Profile</Link>
-                <button onClick={handleLogout} className="block w-full text-left text-white hover:text-gray-300 hover:bg-gray-700 py-2 px-4 rounded transition duration-300">Logout</button>
+                <button 
+                  onClick={handleLogout} 
+                  className="block w-full text-left text-white hover:text-gray-300 hover:bg-gray-700 py-2 px-4 rounded transition duration-300"
+                >
+                  Logout
+                </button>
+
+                {/* Dark Mode Toggle */}
+                <div className="flex items-center">
+                <input
+                  type="checkbox"
+                  id="darkModeToggle"
+                  className="hidden"
+                  checked={toggleChecked}
+                  onChange={handleDarkModeToggle}
+                />
+                <label
+                  htmlFor="darkModeToggle"
+                  className={`relative inline-block w-10 h-5 rounded-full cursor-pointer transition-colors ${darkMode ? 'bg-gray-600' : 'bg-gray-400'}`}
+                >
+                  <span className={`absolute left-1 top-1 w-3 h-3 rounded-full transition transform ${darkMode ? 'translate-x-5' : 'translate-x-0'} bg-white`} />
+                  <span className="absolute right-1 top-1 w-3 h-3 rounded-full bg-yellow-500 transform transition-all duration-300" style={{ transform: darkMode ? 'translateX(0)' : 'translateX(-100%)' }}></span>
+                  <span className="absolute left-1 top-1 w-3 h-3 rounded-full bg-gray-800 transform transition-all duration-300" style={{ transform: darkMode ? 'translateX(100%)' : 'translateX(0)' }}></span>
+                </label>
+              </div>
+              
               </>
             )}
           </div>

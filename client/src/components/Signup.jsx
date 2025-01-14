@@ -109,6 +109,7 @@ const Signup = () => {
             <button
               onClick={handleCloseModal}
               className="w-full bg-green-500 text-white p-2 rounded hover:bg-green-600"
+              disabled={loading}
             >
               OK
             </button>
