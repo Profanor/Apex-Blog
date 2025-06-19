@@ -73,7 +73,7 @@ export const loginUser = async (req: Request, res: Response) => {
       return res.status(400).json({ message: 'User not found. Please sign up first.' });
     }
 
-    // Ensure user.password is a string
+    // ensure user.password is a string
     if (typeof user.password !== 'string') {
         return res.status(500).json({ message: 'Invalid Credentials' });
       }

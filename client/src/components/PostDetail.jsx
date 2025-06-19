@@ -36,8 +36,7 @@ const PostDetail = () => {
           Authorization: `Bearer ${localStorage.getItem('token')}`
         }
       });
-      console.log('Post deleted successfully');
-      navigate('/'); // navigate to the root page after deleting the post
+      navigate('/');
     } catch (error) {
       console.error('Failed to delete post:', error.response?.data || error.message);
     }

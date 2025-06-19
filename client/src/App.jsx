@@ -11,6 +11,7 @@ import PostDetail from './components/PostDetail';
 import CreatePost from './components/Posts';
 import EditPost from './components/EditPost';
 import LayoutWithNavbar from './components/LayoutWithNavbar';
+import Profile from './components/Profile';
 
 const App = () => {
   const { isAuthenticated } = useAuthenticationStatus();
@@ -37,6 +38,7 @@ const App = () => {
           {/* protected Routes */}
           <Route element={<LayoutWithNavbar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />}>
             <Route path='/' element={<Posts searchQuery={searchQuery} />} />
+            <Route path="/profile" element={<Profile />} />
             <Route path='/posts' element={<Posts searchQuery={searchQuery} />} />
             <Route path="/posts/:postId" element={<PostDetail />} />
             <Route path="/edit/:postId" element={<EditPost />} />
