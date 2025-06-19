@@ -7,9 +7,9 @@ import Spinner from './Spinner';
 const PostDetail = () => {
   const [post, setPost] = useState(null);
   const [loading, setLoading] = useState(true);
-  const navigate = useNavigate();
   const { isAuthenticated, user } = useContext(AuthContext);
   const { postId } = useParams();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchPost = async () => {
@@ -17,7 +17,6 @@ const PostDetail = () => {
         const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:4000';
         const response = await axios.get(`${apiUrl}/api/posts/${postId}`);
         setPost(response.data.post);
-        console.log('Post data fetched successfully:', response.data.post);
         setLoading(false);
       } catch (error) {
         console.error('Failed to fetch post:', error.response?.data || error.message);
@@ -33,8 +32,8 @@ const PostDetail = () => {
       const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:4000';
       await axios.delete(`${apiUrl}/api/posts/${postId}`, {
         headers: {
-          Authorization: `Bearer ${localStorage.getItem('token')}`
-        }
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
       });
       navigate('/');
     } catch (error) {
@@ -47,12 +46,10 @@ const PostDetail = () => {
   };
 
   const handleGoBack = () => {
-    navigate('/posts'); 
+    navigate('/posts');
   };
 
-  // Function to convert ArrayBuffer to base64
   const arrayBufferToBase64 = (buffer) => {
-    console.log('Converting ArrayBuffer to base64');
     let binary = '';
     const bytes = new Uint8Array(buffer);
     for (let i = 0; i < bytes.byteLength; i++) {
@@ -61,52 +58,53 @@ const PostDetail = () => {
     return window.btoa(binary);
   };
 
-  if (loading) {
-    return <Spinner />;
-  }
-
-  if (!post) {
-    return <div>Post not found.</div>;
-  }
+  if (loading) return <Spinner />;
+  if (!post) return <div className="text-center text-gray-600">Post not found.</div>;
 
   return (
     <div className="container mx-auto p-4">
-      {post.image && (
-        <div className="flex justify-flex-start mb-4">
-          <img
-            src={`data:${post.image.contentType};base64,${arrayBufferToBase64(post.image.data.data)}`}
-            alt="Post"
-            className="rounded-lg"
-            style={{ maxWidth: '100%', maxHeight: '500px', objectFit: 'contain' }}
-          />
+      <div className="max-w-3xl mx-auto bg-white rounded-xl shadow-md p-6">
+        {post.image && (
+          <div className="mb-6">
+            <img
+              src={`data:${post.image.contentType};base64,${arrayBufferToBase64(post.image.data.data)}`}
+              alt="Post"
+              className="rounded-lg w-full object-cover max-h-[400px] shadow"
+            />
+          </div>
+        )}
+
+        <h1 className="text-3xl font-bold text-gray-900 mb-4">{post.title}</h1>
+
+        <p className="text-gray-800 leading-relaxed mb-6 whitespace-pre-line">{post.content}</p>
+
+        <div className="flex justify-between items-center text-sm text-gray-500 mb-6">
+          <span>By {post.author}</span>
+          <span>{new Date(post.creationDate).toLocaleDateString()}</span>
         </div>
-      )}
-      <h1 className="text-3xl font-bold mb-6">{post.title}</h1>
-      <p className="mt-2">{post.content}</p>
-      <small className="">By {post.author}</small>
-      {isAuthenticated && user.username === post.author && (
-        <div className="mt-4">
-          <button
-            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 mr-2 border rounded-sm"
-            onClick={handleEdit}
-          >
-            Edit
-          </button>
-          <button
-            className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 border rounded-sm"
-            onClick={handleDelete}
-          >
-            Delete
-          </button>
-        </div>
-      )}
-      
-      <div className="mt-4">
+
+        {isAuthenticated && user.username === post.author && (
+          <div className="flex space-x-4 mb-4">
+            <button
+              onClick={handleEdit}
+              className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded shadow"
+            >
+              ✏️ Edit
+            </button>
+            <button
+              onClick={handleDelete}
+              className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded shadow"
+            >
+              🗑️ Delete
+            </button>
+          </div>
+        )}
+
         <button
-          className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 border rounded-sm"
           onClick={handleGoBack}
+          className="bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded shadow"
         >
-          Go Back
+          ← Go Back
         </button>
       </div>
     </div>
