@@ -30,11 +30,11 @@ const App = () => {
     <AuthProvider>
       <Router>
       <Routes>
-          {/* Public Auth Routes (no navbar) */}
+          {/* public auth routes */}
           <Route path="/signup" element={<Signup />} />
           <Route path="/login" element={<Login />} />
 
-          {/* Protected / Content Routes (with navbar) */}
+          {/* protected Routes */}
           <Route element={<LayoutWithNavbar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />}>
             <Route path='/' element={<Posts searchQuery={searchQuery} />} />
             <Route path='/posts' element={<Posts searchQuery={searchQuery} />} />

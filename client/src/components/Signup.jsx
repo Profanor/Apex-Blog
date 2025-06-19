@@ -72,7 +72,7 @@ const Signup = () => {
 
   const handleCloseModal = () => {
     setShowModal(false);
-    navigate('/login');
+    navigate('/');
   };
 
   const handlePhotoChange = (e) => {
@@ -172,6 +172,15 @@ const Signup = () => {
               {loading ? <Spinner /> : 'Signup'}
             </button>
           </form>
+            <p className="text-sm text-gray-700 text-center mt-4">
+              Already have an account?{' '}
+              <a
+                href="/login"
+                className="text-blue-600 hover:underline hover:text-blue-800 font-medium transition-colors duration-200 "
+              >
+                Log in here
+              </a>
+            </p>
         </div>
       </div>
 

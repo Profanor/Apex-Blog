@@ -4,7 +4,7 @@ import jwt from 'jsonwebtoken';
 import User from '../models/Users';
 
 
-// Register a new user
+// register a new user
 export const registerUser = async (req: Request, res: Response) => {
   const { username, password } = req.body;
   const profilePhoto = req.file;
@@ -14,7 +14,7 @@ export const registerUser = async (req: Request, res: Response) => {
   }
 
   try {
-    // Check if username is unique
+    // check if username is unique
     const existingUser = await User.findOne({ username });
 
     if (existingUser) {
@@ -35,7 +35,22 @@ export const registerUser = async (req: Request, res: Response) => {
     });
 
     await newUser.save();
-    res.status(201).json({ message: 'User created' });
+
+    // generate token immediately after signup
+    const token = jwt.sign(
+      { id: newUser._id, username: newUser.username },
+      process.env.JWT_SECRET || 'secretkey',
+      { expiresIn: '1h' }
+    );
+
+    res.status(201).json({ 
+      token, 
+      user: {
+        id: newUser._id,
+        username: newUser.username,
+        profilePhoto: newUser.profilePhoto
+      }
+    });
   } catch (error) {
     console.error('Error registering user:', error);
     res.status(500).json({ message: 'Server Error' });
@@ -75,7 +90,14 @@ export const loginUser = async (req: Request, res: Response) => {
       { expiresIn: '1h' }
     );
 
-    res.json({ token, user: { id: user._id, username: user.username, profilePhoto: user.profilePhoto } });
+    res.json({ 
+      token, 
+      user: { 
+        id: user._id, 
+        username: user.username, 
+        profilePhoto: user.profilePhoto 
+      } 
+    });
   } catch (error) {
     console.error('Error logging in user:', error);
     res.status(500).json({ message: 'Server Error' });
