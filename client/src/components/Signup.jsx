@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 import { useState, useContext, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ThemeContext } from '../ThemeContext';
+import { ThemeContext } from '../context/ThemeContext';
 import { User, Lock, Image, Eye, EyeOff } from 'lucide-react';
 import Spinner from './Spinner';
 import axios from 'axios';

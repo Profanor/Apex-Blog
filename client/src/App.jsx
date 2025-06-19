@@ -1,9 +1,9 @@
 import './App.css';
 import React, { useState, useContext, useEffect } from 'react';
-import { ThemeContext } from './ThemeContext';
+import { ThemeContext } from './context/ThemeContext';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import { useAuthenticationStatus } from './useAuthStatus';
-import AuthProvider from './AuthContext';
+import { useAuthenticationStatus } from './context/useAuthStatus';
+import AuthProvider from './context/AuthContext';
 import Signup from './components/Signup';
 import Login from './components/Login';
 import Posts from './components/AllPosts';

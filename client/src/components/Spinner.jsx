@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { ThemeContext } from '../ThemeContext';
+import { ThemeContext } from '../context/ThemeContext';
 
 const Spinner = () => {
   const { darkMode } = useContext(ThemeContext);
