@@ -10,7 +10,7 @@ import Posts from './components/AllPosts';
 import PostDetail from './components/PostDetail';
 import CreatePost from './components/Posts';
 import EditPost from './components/EditPost';
-import Navbar from './components/Navbar';
+import LayoutWithNavbar from './components/LayoutWithNavbar';
 
 const App = () => {
   const { isAuthenticated } = useAuthenticationStatus();
@@ -29,18 +29,22 @@ const App = () => {
   return (
     <AuthProvider>
       <Router>
-        <Navbar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
-        <Routes>
-          <Route path='/' element={<Posts searchQuery={searchQuery} />} />
-          <Route path='/posts' element={<Posts searchQuery={searchQuery} />} />
-          <Route path="/posts/:postId" element={<PostDetail />} />
-          <Route path="/edit/:postId" element={<EditPost />} />
-          <Route path='/signup' element={<Signup />} />
-          <Route path='/login' element={<Login />} />
+      <Routes>
+          {/* Public Auth Routes (no navbar) */}
+          <Route path="/signup" element={<Signup />} />
+          <Route path="/login" element={<Login />} />
+
+          {/* Protected / Content Routes (with navbar) */}
+          <Route element={<LayoutWithNavbar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />}>
+            <Route path='/' element={<Posts searchQuery={searchQuery} />} />
+            <Route path='/posts' element={<Posts searchQuery={searchQuery} />} />
+            <Route path="/posts/:postId" element={<PostDetail />} />
+            <Route path="/edit/:postId" element={<EditPost />} />
           {/* Conditionally render CreatePost based on authentication */}
           {!isAuthenticated && <Route path="/create-post" element={<CreatePost />} />}
+          </Route>
         </Routes>
-    </Router>
+      </Router>
     </AuthProvider>
   )
 }
