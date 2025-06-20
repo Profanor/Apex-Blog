@@ -2,6 +2,7 @@
 import { useState, useContext, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ThemeContext } from '../context/ThemeContext';
+import { AuthContext } from '../context/AuthContext';
 import { User, Lock, Image, Eye, EyeOff } from 'lucide-react';
 import Spinner from './Spinner';
 import axios from 'axios';
@@ -24,6 +25,7 @@ const Signup = () => {
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const { darkMode } = useContext(ThemeContext);
+  const { login } = useContext(AuthContext);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -51,11 +53,12 @@ const Signup = () => {
         formData.append('profilePhoto', profilePhoto);
       }
 
-      await axios.post(`${apiUrl}/auth/register`, formData, {
+      const res = await axios.post(`${apiUrl}/auth/register`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }
       });
+      login(res.data.token);
 
       setShowModal(true);
       setLoading(false);

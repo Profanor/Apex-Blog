@@ -1,0 +1,56 @@
+name: CI - Apex Blog
+
+on:
+  push:
+    branches: [main, dev]
+  pull_request:
+    branches: [main, dev]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    services:
+      mongo:
+        image: mongo:6
+        ports:
+          - 27017:27017
+        options: >-
+          --health-cmd="mongosh --eval 'db.runCommand({ ping: 1 })'"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
+
+    steps:
+      - name: 📥 Checkout code
+        uses: actions/checkout@v3
+
+      - name: 🟢 Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - name: 🔧 Install server dependencies
+        working-directory: ./server
+        run: npm install
+
+      - name: 🧪 Run server tests
+        working-directory: ./server
+        env:
+          MONGODB_URI: mongodb://localhost:27017/testdb
+          JWT_SECRET: dummysecret
+        run: |
+          npm run build
+          npm test
+
+      - name: 🔧 Install client dependencies
+        working-directory: ./client
+        run: npm install
+
+      - name: 🧪 Run client tests
+        working-directory: ./client
+        run: npm test -- --watchAll=false
+
+      - name: ✅ Build client
+        working-directory: ./client
+        run: npm run build
