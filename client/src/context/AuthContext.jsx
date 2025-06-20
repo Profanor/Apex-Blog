@@ -10,11 +10,17 @@ const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     const token = localStorage.getItem('token');
-    if (token) {
-      const decodedToken = jwtDecode(token);
-      fetchUserProfile(decodedToken.id);
-      setIsAuthenticated(true);
+    if (token && token.split('.').length === 3) {
+      try {
+        const decodedToken = jwtDecode(token);
+        fetchUserProfile(decodedToken.id);
+        setIsAuthenticated(true);
+      } catch (error) {
+        console.error('Failed to decode token:', error);
+        localStorage.removeItem('token'); // clean up bad token
+      }
     }
+    
   }, []);
 
   useEffect(() => {
@@ -35,10 +41,16 @@ const AuthProvider = ({ children }) => {
   };
 
   const login = (token) => {
-    localStorage.setItem('token', token);
-    const decodedToken = jwtDecode(token);
-    fetchUserProfile(decodedToken.id);
-    setIsAuthenticated(true);
+    if (token && token.split('.').length === 3) {
+      try {
+        const decodedToken = jwtDecode(token);
+        fetchUserProfile(decodedToken.id);
+        setIsAuthenticated(true);
+        localStorage.setItem('token', token);
+      } catch (err) {
+        console.error('Invalid login token:', err);
+      }
+    }
   };
 
   const logout = () => {
